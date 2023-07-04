@@ -65,4 +65,15 @@ namespace PharmacyApp
             CountMed = countMed;
         }
     }
+
+    public class Preferences
+    {
+        public string ServerName { get; set; }
+        public string DbName { get; set; }
+        public Preferences(string serverName, string dbName)
+        {
+            ServerName = serverName;
+            DbName = dbName;
+        }
+    }
 }

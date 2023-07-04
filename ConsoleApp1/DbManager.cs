@@ -7,86 +7,136 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PharmacyApp
 {
     public class DbManager
     {
 
-    public string InitiateDb(string serverName, string dbName)
+    public string InitializeDb()
         {
-            string pref = "";
-            if(!File.Exists("pref.txt"))
+            string serverName="";
+            string dbName="";
+            string command = "";
+
+
+
+            if (!File.Exists("pref.txt"))
             {
-                File.Create("pref.txt");
+                do
+                {
+                    Console.WriteLine("Введите имя сервера базы данных:");
+                    serverName = Console.ReadLine();
+                    Console.Clear();
+                    if(serverName =="")
+                    {
+                        Console.WriteLine("Вы не ввели имя сервера базы данных. Продолжить ввод или выйти из приложения (y/n)?");
+                        if(Console.ReadLine()!="y")
+                        {
+                            Environment.Exit(0);
+                        }    
+                    }
+                }
+                while (serverName == "");
+
+                do
+                {
+
+                    Console.WriteLine("Введите имя базы данных:");
+                    dbName = Console.ReadLine();
+                    Console.Clear();
+
+                    if (dbName == "")
+                    {
+                        Console.WriteLine("Вы не ввели имя базы данных. Продолжить ввод или выйти из приложения (y/n)?");
+                        if (Console.ReadLine() != "y")
+                        {
+                            Environment.Exit(0);
+                        }
+                    }
+                }
+                while (dbName == "");
+
+
                 try
                 {
-                    StreamWriter sw = new StreamWriter("pref.txt");
-                    sw.WriteLine("{\"connectionString\": "+ @"Data Source=.\" + serverName + ";Initial Catalog=" + dbName + ";Integrated Security=True");
-                    sw.Close();
+                    Preferences pref = new Preferences(serverName, dbName);
+                    FileStream fs = File.Create("pref.txt");
+                    byte[] buffer = Encoding.Default.GetBytes(JsonSerializer.Serialize(pref));
+                    fs.Write(buffer, 0, buffer.Length);
+                    fs.Close();
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Exception: " + e.Message);
+                    Console.WriteLine("Возникла ошибка: " + e.Message);
+                    Console.WriteLine("Завершение выполнения программы.");
                 }
-                finally
+
+                string initiateConnectionString = @"Data Source=.\" + serverName + ";Initial Catalog=master;Integrated Security=True";
+                string createDbCommand = "CREATE DATABASE " + dbName;
+                int checkDatabaseAvailability = 0;
+
+                try
                 {
-                    Console.WriteLine("Executing finally block.");
+                    CommExecuteNonQuery(createDbCommand, initiateConnectionString);
                 }
+                catch (SqlException ex)
+                {
+                    checkDatabaseAvailability = ex.Number;
+                }
+                Console.WriteLine(checkDatabaseAvailability);
+                string connectionStr = @"Data Source=.\" + serverName + ";Initial Catalog=" + dbName + ";Integrated Security=True";
+
+
+                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Medicaments')) CREATE TABLE [dbo].[Medicaments]([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar](50) NULL, [Price] [decimal](18, 0) NULL, CONSTRAINT [PK_Medicaments] PRIMARY KEY NONCLUSTERED(Id))";
+                CommExecuteNonQuery(command, connectionStr);
+                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Pharmacies')) CREATE TABLE [dbo].[Pharmacies] ([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar] (50) NULL, [Address][nvarchar] (100) NULL, [Phone][nvarchar] (20) NULL, CONSTRAINT[PK_Pharmacies] PRIMARY KEY NONCLUSTERED(Id))";
+                CommExecuteNonQuery(command, connectionStr);
+                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Stores')) CREATE TABLE [dbo].[Stores]([Id] [int] NOT NULL IDENTITY(1,1), [PharmId] [int] NOT NULL, [Name] [nvarchar](50) NULL, CONSTRAINT [PK_Stores] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Pharmacies_Stores] FOREIGN KEY([PharmId]) REFERENCES [dbo].[Pharmacies] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
+                CommExecuteNonQuery(command, connectionStr);
+                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Consignments')) CREATE TABLE [dbo].[Consignments]([Id] [int] NOT NULL IDENTITY(1,1), [MedId] [int] NOT NULL, [StoreId] [int] NOT NULL, [CountMed] [int] NULL, CONSTRAINT [PK_Consignments] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Medicaments_Consignments] FOREIGN KEY([MedId]) REFERENCES [dbo].[Medicaments] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT [FK_Stores_Consignments] FOREIGN KEY([StoreId]) REFERENCES [dbo].[Stores] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
+                CommExecuteNonQuery(command, connectionStr);
+
+                Console.Clear();
+                Console.WriteLine("Добавить тестовое заполнение базы данных (y/n)?");
+                if (Console.ReadLine() == "y")
+                {
+                    FillTestSet(connectionStr);
+                }
+
             }
             else
             {
                 try
                 {
                     StreamReader sr = new StreamReader("pref.txt");
-                    pref = sr.ReadLine();
+                    string prefValues = sr.ReadLine();
                     sr.Close();
-                    Console.WriteLine(pref);
 
+                    if (prefValues!= "")
+                    { 
+                    Preferences pref = JsonSerializer.Deserialize<Preferences>(prefValues);
+                        serverName = pref.ServerName;
+                        dbName = pref.DbName;
+                    }
+                    else
+                    {
+                        File.Delete("pref.txt");
+                        Console.WriteLine("Файл настроек поврежден. Приложение будет закрыто. Откройте его снова для продолжения.");
+
+                    }
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Exception: " + e.Message);
-                }
-                finally
-                {
-                    Console.WriteLine("Executing finally block.");
+                    Console.WriteLine("Возникла ошибка: " + e.Message);
+                    Console.WriteLine("Завершение выполнения программы.");
                 }
             }    
 
-
-
-
-
-            string initiateConnectionString = @"Data Source=.\" + serverName + ";Initial Catalog=master;Integrated Security=True";
-            string createDbCommand = "CREATE DATABASE " + dbName;
-            int checkDatabaseAvailability = 0;
-            string command = "";
-
-
-
-            try
-            {
-                CommExecuteNonQuery(createDbCommand, initiateConnectionString);
-            }
-            catch (SqlException ex)
-            {
-                checkDatabaseAvailability = ex.Number;
-            }
-            Console.WriteLine(checkDatabaseAvailability);
             
-            connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" +dbName + ";Integrated Security=True";
-
-
-                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Medicaments')) CREATE TABLE [dbo].[Medicaments]([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar](50) NULL, [Price] [decimal](18, 0) NULL, CONSTRAINT [PK_Medicaments] PRIMARY KEY NONCLUSTERED(Id))";
-                CommExecuteNonQuery(command, connectionString);
-                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Pharmacies')) CREATE TABLE [dbo].[Pharmacies] ([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar] (50) NULL, [Address][nvarchar] (100) NULL, [Phone][nvarchar] (20) NULL, CONSTRAINT[PK_Pharmacies] PRIMARY KEY NONCLUSTERED(Id))";
-                CommExecuteNonQuery(command, connectionString);
-                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Stores')) CREATE TABLE [dbo].[Stores]([Id] [int] NOT NULL IDENTITY(1,1), [PharmId] [int] NOT NULL, [Name] [nvarchar](50) NULL, CONSTRAINT [PK_Stores] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Pharmacies_Stores] FOREIGN KEY([PharmId]) REFERENCES [dbo].[Pharmacies] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
-                CommExecuteNonQuery(command, connectionString);
-                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Consignments')) CREATE TABLE [dbo].[Consignments]([Id] [int] NOT NULL IDENTITY(1,1), [MedId] [int] NOT NULL, [StoreId] [int] NOT NULL, [CountMed] [int] NULL, CONSTRAINT [PK_Consignments] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Medicaments_Consignments] FOREIGN KEY([MedId]) REFERENCES [dbo].[Medicaments] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT [FK_Stores_Consignments] FOREIGN KEY([StoreId]) REFERENCES [dbo].[Stores] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
-                CommExecuteNonQuery(command, connectionString);
-
+            string connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" +dbName + ";Integrated Security=True";
 
             return connectionString;
     }

@@ -11,9 +11,7 @@ namespace PharmacyApp
         static void Main(string[] args)
         {
             DbManager dbManager = new DbManager();
-            string connectionString = dbManager.InitiateDb("MSSQLSERVER01", "PharmacyDb");
-            dbManager.FillTestSet(connectionString);
-
+            string connectionString = dbManager.InitializeDb();
         }
 
     }
