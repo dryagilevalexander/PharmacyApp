@@ -21,8 +21,6 @@ namespace PharmacyApp
             string dbName="";
             string command = "";
 
-
-
             if (!File.Exists("pref.txt"))
             {
                 do
@@ -32,8 +30,8 @@ namespace PharmacyApp
                     Console.Clear();
                     if(serverName =="")
                     {
-                        Console.WriteLine("Вы не ввели имя сервера базы данных. Продолжить ввод или выйти из приложения (y/n)?");
-                        if(Console.ReadLine()!="y")
+                        Console.WriteLine("Вы не ввели имя сервера базы данных. Для повторной попытки ввода нажмите Y. Любая другая клавиша: выход из приложения.");
+                        if(Console.ReadKey(true).Key!= ConsoleKey.Y)
                         {
                             Environment.Exit(0);
                         }    
@@ -50,8 +48,8 @@ namespace PharmacyApp
 
                     if (dbName == "")
                     {
-                        Console.WriteLine("Вы не ввели имя базы данных. Продолжить ввод или выйти из приложения (y/n)?");
-                        if (Console.ReadLine() != "y")
+                        Console.WriteLine("Вы не ввели имя базы данных. Для повторной попытки ввода нажмите Y. Любая другая клавиша: выход из приложения.");
+                        if (Console.ReadKey(true).Key != ConsoleKey.Y)
                         {
                             Environment.Exit(0);
                         }
@@ -101,7 +99,7 @@ namespace PharmacyApp
 
                 Console.Clear();
                 Console.WriteLine("Добавить тестовое заполнение базы данных (y/n)?");
-                if (Console.ReadLine() == "y")
+                if (Console.ReadKey().Key == ConsoleKey.Y)
                 {
                     FillTestSet(connectionStr);
                 }
@@ -124,7 +122,7 @@ namespace PharmacyApp
                     else
                     {
                         File.Delete("pref.txt");
-                        Console.WriteLine("Файл настроек поврежден. Приложение будет закрыто. Откройте его снова для продолжения.");
+                        Console.WriteLine("Файл настроек поврежден. Приложение будет закрыто. Откройте его повторно для продолжения.");
 
                     }
                 }
