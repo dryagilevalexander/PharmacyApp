@@ -46,10 +46,10 @@ namespace PharmacyApp
                     MenuOperation(PharmaciesMenu.Items);
                     break;
                 case "Работа со складами":
-                    MenuOperation(ConsignmentMenu.Items);
+                    MenuOperation(StoresMenu.Items);
                     break;
                 case "Работа с партиями":
-                    MenuOperation(ConsignmentMenu.Items);
+                    MenuOperation(ConsignmentsMenu.Items);
                     break;
                 case "В главное меню":
                     MenuOperation(MainMenu.Items);

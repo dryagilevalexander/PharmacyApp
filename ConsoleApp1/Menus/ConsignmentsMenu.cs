@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PharmacyApp.Menus
 {
-    public static class ConsignmentMenu
+    public static class ConsignmentsMenu
     {
         public static List<string> Items = new List<string>()
             {
