@@ -9,17 +9,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PharmacyApp
 {
     public class DbManager
     {
+        public string ConnectionString { get; set; }
 
     public string InitializeDb()
         {
             string serverName="";
             string dbName="";
             string command = "";
+            
 
             if (!File.Exists("pref.txt"))
             {
@@ -135,6 +138,7 @@ namespace PharmacyApp
 
             
             string connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" +dbName + ";Integrated Security=True";
+            ConnectionString = connectionString;
 
             return connectionString;
     }

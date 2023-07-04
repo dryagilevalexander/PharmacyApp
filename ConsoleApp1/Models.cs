@@ -34,6 +34,10 @@ namespace PharmacyApp
             Name = name;
             Price = price;
         }
+
+        public Medicament()
+        {
+        }
     }
 
     public class Store

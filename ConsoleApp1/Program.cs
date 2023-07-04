@@ -11,8 +11,9 @@ namespace PharmacyApp
     {
         static void Main(string[] args)
         {
-            // DbManager dbManager = new DbManager();
-            // string connectionString = dbManager.InitializeDb();
+            DbManager dbManager = new DbManager();
+            string connectionString = dbManager.InitializeDb();
+            TransitClass.DbContext = dbManager;
             MenuManager.MenuOperation(MainMenu.Items);
         }
     }
