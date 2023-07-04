@@ -12,7 +12,7 @@ namespace PharmacyApp
         {
             // DbManager dbManager = new DbManager();
             // string connectionString = dbManager.InitializeDb();
-            var menu = new Menu(new Point(10, 10), MenuManager.MainMenuItems);
+            var menu = new Menu(new Point(Console.WindowWidth / 2 - MenuManager.MainMenuItems[0].Length/2, Console.WindowHeight / 2 - MenuManager.MainMenuItems.Count()/2), MenuManager.MainMenuItems);
             menu.Draw();
             string nameMenuItem = "";
             nameMenuItem = MenuManager.WaitingForInput(menu);

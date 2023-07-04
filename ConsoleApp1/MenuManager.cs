@@ -75,27 +75,27 @@ namespace PharmacyApp
             switch (menuItem)
             {
                 case "Работа с товарами":
-                    var menu = new Menu(new Point(10, 10), MenuManager.MedicamentsMenuItems);
+                    var menu = new Menu(new Point(Console.WindowWidth / 2 - MenuManager.MedicamentsMenuItems[0].Length / 2, Console.WindowHeight / 2 - MenuManager.MedicamentsMenuItems.Count() / 2), MenuManager.MedicamentsMenuItems);
                     menu.Draw();
                     Navigate(MenuManager.WaitingForInput(menu));
                     break;
                 case "Работа с аптеками":
-                    menu = new Menu(new Point(10, 10), MenuManager.PharmaciesMenuItems);
+                    menu = new Menu(new Point(Console.WindowWidth / 2 - MenuManager.PharmaciesMenuItems[0].Length / 2, Console.WindowHeight / 2 - MenuManager.PharmaciesMenuItems.Count() / 2), MenuManager.PharmaciesMenuItems);
                     menu.Draw();
                     Navigate(MenuManager.WaitingForInput(menu));
                     break;
                 case "Работа со складами":
-                    menu = new Menu(new Point(10, 10), MenuManager.StoresMenuItems);
+                    menu = new Menu(new Point(Console.WindowWidth / 2 - MenuManager.StoresMenuItems[0].Length / 2, Console.WindowHeight / 2 - MenuManager.StoresMenuItems.Count() / 2), MenuManager.StoresMenuItems);
                     menu.Draw();
                     Navigate(MenuManager.WaitingForInput(menu));
                     break;
                 case "Работа с партиями":
-                    menu = new Menu(new Point(10, 10), MenuManager.StoresMenuItems);
+                    menu = new Menu(new Point(Console.WindowWidth / 2 - MenuManager.ConsignmentMenuItems[0].Length / 2, Console.WindowHeight / 2 - MenuManager.ConsignmentMenuItems.Count() / 2), MenuManager.ConsignmentMenuItems);
                     menu.Draw();
                     Navigate(MenuManager.WaitingForInput(menu));
                     break;
                 case "В главное меню":
-                    menu = new Menu(new Point(10, 10), MenuManager.MainMenuItems);
+                    menu = new Menu(new Point(Console.WindowWidth / 2 - MenuManager.MainMenuItems[0].Length / 2, Console.WindowHeight / 2 - MenuManager.MainMenuItems.Count() / 2), MenuManager.MainMenuItems);
                     menu.Draw();
                     Navigate(MenuManager.WaitingForInput(menu));
                     break;
