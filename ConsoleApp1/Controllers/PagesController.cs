@@ -4,42 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PharmacyApp
+namespace PharmacyApp.Controllers
 {
-    public static class CommandManager
+    public static class PagesController
     {
-        public static string CommandSelection(string command)
+        public static string RoutingPages(string pageName)
         {
-            string resultCommand = string.Empty;
-            switch (command)
+            string result = string.Empty;
+            switch (pageName)
             {
                 case "Создать товар":
-                    resultCommand = RepositoryManager.CreateMedicament();
+                    result = Pages.CreateMedicament();
                     break;
                 case "Удалить товар":
-                    resultCommand = RepositoryManager.DeleteMedicament();
+                    result = Pages.DeleteMedicament();
                     break;
                 case "Создать аптеку":
-                    resultCommand = RepositoryManager.CreatePharmacy();
+                    result = Pages.CreatePharmacy();
                     break;
                 case "Удалить аптеку":
-                    resultCommand = RepositoryManager.DeletePharmacy();
+                    result = Pages.DeletePharmacy();
                     break;
                 case "Создать склад":
-                    resultCommand = RepositoryManager.CreateStore();
+                    result = Pages.CreateStore();
                     break;
                 case "Удалить склад":
-                    resultCommand = RepositoryManager.DeleteStore();
+                    result = Pages.DeleteStore();
                     break;
                 case "Создать партию":
-                    resultCommand = RepositoryManager.CreateConsignment();
+                    result = Pages.CreateConsignment();
                     break;
                 case "Удалить партию":
-                    resultCommand = RepositoryManager.DeleteConsignment();
+                    result = Pages.DeleteConsignment();
                     break;
             }
+
             Console.ReadKey();
-            return resultCommand;
+            return result;
         }
     }
 }

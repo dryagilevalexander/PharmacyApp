@@ -10,42 +10,53 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Cryptography.X509Certificates;
+using PharmacyApp.Models;
 
-namespace PharmacyApp
+namespace PharmacyApp.DAL
 {
-    public class DbManager
+    public class DbContext
     {
-        public string ConnectionString { get; set; }
+        private static DbContext instance;
 
-    public string InitializeDb()
+        private DbContext()
+        { }
+
+        public static DbContext getInstance()
         {
-            string serverName="";
-            string dbName="";
+            if (instance == null)
+                instance = new DbContext();
+            return instance;
+        }
+
+        private string _connectionString="";
+        public void InitializeDb()
+        {
+            string serverName = "";
+            string dbName = "";
             string command = "";
-            
+
 
             if (!File.Exists("pref.txt"))
             {
                 do
                 {
-                    Console.WriteLine("Введите имя сервера базы данных:");
+                    Console.Write("Введите имя сервера базы данных: ");
                     serverName = Console.ReadLine();
                     Console.Clear();
-                    if(serverName =="")
+                    if (serverName == "")
                     {
                         Console.WriteLine("Вы не ввели имя сервера базы данных. Для повторной попытки ввода нажмите Y. Любая другая клавиша: выход из приложения.");
-                        if(Console.ReadKey(true).Key!= ConsoleKey.Y)
+                        if (Console.ReadKey(true).Key != ConsoleKey.Y)
                         {
                             Environment.Exit(0);
-                        }    
+                        }
                     }
                 }
                 while (serverName == "");
 
                 do
                 {
-
-                    Console.WriteLine("Введите имя базы данных:");
+                    Console.Write("Введите имя базы данных: ");
                     dbName = Console.ReadLine();
                     Console.Clear();
 
@@ -75,36 +86,36 @@ namespace PharmacyApp
                     Console.WriteLine("Завершение выполнения программы.");
                 }
 
-                string initiateConnectionString = @"Data Source=.\" + serverName + ";Initial Catalog=master;Integrated Security=True";
+                _connectionString = @"Server=.\" + serverName + ";Initial Catalog=master;Integrated Security=True";
                 string createDbCommand = "CREATE DATABASE " + dbName;
                 int checkDatabaseAvailability = 0;
 
                 try
                 {
-                    CommExecuteNonQuery(createDbCommand, initiateConnectionString);
+                    CommExecuteNonQuery(createDbCommand);
                 }
                 catch (SqlException ex)
                 {
-                    checkDatabaseAvailability = ex.Number;
+                    Console.WriteLine(ex.Message);
                 }
-                Console.WriteLine(checkDatabaseAvailability);
-                string connectionStr = @"Data Source=.\" + serverName + ";Initial Catalog=" + dbName + ";Integrated Security=True";
+
+                _connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" + dbName + ";Integrated Security=True";
 
 
                 command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Medicaments')) CREATE TABLE [dbo].[Medicaments]([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar](50) NULL, [Price] [decimal](18, 0) NULL, CONSTRAINT [PK_Medicaments] PRIMARY KEY NONCLUSTERED(Id))";
-                CommExecuteNonQuery(command, connectionStr);
+                CommExecuteNonQuery(command);
                 command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Pharmacies')) CREATE TABLE [dbo].[Pharmacies] ([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar] (50) NULL, [Address][nvarchar] (100) NULL, [Phone][nvarchar] (20) NULL, CONSTRAINT[PK_Pharmacies] PRIMARY KEY NONCLUSTERED(Id))";
-                CommExecuteNonQuery(command, connectionStr);
+                CommExecuteNonQuery(command);
                 command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Stores')) CREATE TABLE [dbo].[Stores]([Id] [int] NOT NULL IDENTITY(1,1), [PharmId] [int] NOT NULL, [Name] [nvarchar](50) NULL, CONSTRAINT [PK_Stores] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Pharmacies_Stores] FOREIGN KEY([PharmId]) REFERENCES [dbo].[Pharmacies] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
-                CommExecuteNonQuery(command, connectionStr);
+                CommExecuteNonQuery(command);
                 command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Consignments')) CREATE TABLE [dbo].[Consignments]([Id] [int] NOT NULL IDENTITY(1,1), [MedId] [int] NOT NULL, [StoreId] [int] NOT NULL, [CountMed] [int] NULL, CONSTRAINT [PK_Consignments] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Medicaments_Consignments] FOREIGN KEY([MedId]) REFERENCES [dbo].[Medicaments] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT [FK_Stores_Consignments] FOREIGN KEY([StoreId]) REFERENCES [dbo].[Stores] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
-                CommExecuteNonQuery(command, connectionStr);
+                CommExecuteNonQuery(command);
 
                 Console.Clear();
                 Console.WriteLine("Добавить тестовое заполнение базы данных (y/n)?");
                 if (Console.ReadKey().Key == ConsoleKey.Y)
                 {
-                    FillTestSet(connectionStr);
+                    FillTestSet();
                 }
 
             }
@@ -116,9 +127,9 @@ namespace PharmacyApp
                     string prefValues = sr.ReadLine();
                     sr.Close();
 
-                    if (prefValues!= "")
-                    { 
-                    Preferences pref = JsonSerializer.Deserialize<Preferences>(prefValues);
+                    if (prefValues != "")
+                    {
+                        Preferences pref = JsonSerializer.Deserialize<Preferences>(prefValues);
                         serverName = pref.ServerName;
                         dbName = pref.DbName;
                     }
@@ -134,17 +145,15 @@ namespace PharmacyApp
                     Console.WriteLine("Возникла ошибка: " + e.Message);
                     Console.WriteLine("Завершение выполнения программы.");
                 }
-            }    
-
-            
-            string connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" +dbName + ";Integrated Security=True";
-            ConnectionString = connectionString;
-
-            return connectionString;
-    }
+            }
 
 
-    public void FillTestSet(string connectionString)
+            string connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" + dbName + ";Integrated Security=True";
+            _connectionString=connectionString;
+        }
+
+
+        public void FillTestSet()
 
         {
             string command = "";
@@ -302,33 +311,32 @@ namespace PharmacyApp
             foreach (var pharmacy in pharmacies)
             {
                 command = "INSERT INTO [dbo].[Pharmacies]([Name],[Address],[Phone]) VALUES ('" + pharmacy.Name + "','" + pharmacy.Address + "','" + pharmacy.Phone + "')";
-                CommExecuteNonQuery(command, connectionString);
+                CommExecuteNonQuery(command);
             }
 
             foreach (var medicament in medicaments)
             {
                 command = "INSERT INTO [dbo].[Medicaments]([Name],[Price]) VALUES ('" + medicament.Name + "','" + medicament.Price + "')";
-                CommExecuteNonQuery(command, connectionString);
+                CommExecuteNonQuery(command);
             }
 
             foreach (var store in stores)
             {
                 command = "INSERT INTO [dbo].[Stores]([PharmId],[Name]) VALUES ('" + store.PharmId + "','" + store.Name + "')";
-                CommExecuteNonQuery(command, connectionString);
+                CommExecuteNonQuery(command);
             }
 
             foreach (var consignment in consignments)
             {
                 command = "INSERT INTO [dbo].[Consignments]([MedId],[StoreId],[CountMed]) VALUES ('" + consignment.MedId + "','" + consignment.StoreId + "','" + consignment.CountMed + "')";
-                CommExecuteNonQuery(command, connectionString);
+                CommExecuteNonQuery(command);
             }
         }
 
-    public void CommExecuteNonQuery(string queryString,
-    string connectionString)
+        public void CommExecuteNonQuery(string queryString)
         {
             using (SqlConnection connection = new SqlConnection(
-                       connectionString))
+                       _connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
@@ -337,21 +345,21 @@ namespace PharmacyApp
         }
 
 
-    public void CommExecuteReader(string queryString, string connectionString)
-    {
-        using (SqlConnection connection = new SqlConnection(
-                   connectionString))
+        public void CommExecuteReader(string queryString, string connectionString)
         {
-            SqlCommand command = new SqlCommand(queryString, connection);
-            command.Connection.Open();
-            using (SqlDataReader reader = command.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(
+                       connectionString))
             {
-                while (reader.Read())
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    Console.WriteLine(String.Format("{0}", reader[0]));
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(string.Format("{0}", reader[0]));
+                    }
                 }
             }
         }
     }
-}
 }

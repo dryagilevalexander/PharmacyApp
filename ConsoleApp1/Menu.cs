@@ -76,5 +76,30 @@ namespace PharmacyApp
         {
             SetIndex(_drives.IndexOf(drive));
         }
+
+        public string WaitingForInput()
+        {
+            string nameMenuItem = "";
+
+            while (nameMenuItem == "")
+            {
+                var keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Escape)
+                    break;
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        Next();
+                        break;
+                    case ConsoleKey.UpArrow:
+                        Previous();
+                        break;
+                    case ConsoleKey.Enter:
+                        nameMenuItem = GetSelectedItem();
+                        break;
+                }
+            }
+            return nameMenuItem;
+        }
     }
 }

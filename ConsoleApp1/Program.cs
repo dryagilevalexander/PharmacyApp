@@ -1,4 +1,6 @@
-﻿using PharmacyApp.Menus;
+﻿using PharmacyApp.Controllers;
+using PharmacyApp.DAL;
+using PharmacyApp.Menus;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
@@ -11,10 +13,10 @@ namespace PharmacyApp
     {
         static void Main(string[] args)
         {
-            DbManager dbManager = new DbManager();
-            string connectionString = dbManager.InitializeDb();
-            TransitClass.DbContext = dbManager;
-            MenuManager.MenuOperation(MainMenu.Items);
+            DbContext db = DbContext.getInstance();
+            db.InitializeDb();
+            TransitClass.DbContext = db;
+            MenuController.CreateMenu(MainMenu.Items);
         }
     }
 }

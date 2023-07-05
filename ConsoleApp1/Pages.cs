@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using PharmacyApp.DAL;
 
 namespace PharmacyApp
 {
-    public static class RepositoryManager
+    public static class Pages
     {
     public static string CreateMedicament()
         {
@@ -35,15 +36,15 @@ namespace PharmacyApp
             Console.WriteLine("Наименование продукта: " + name);
             Console.WriteLine("Цена продукта: " + price);
 
-            DbManager dbManager = TransitClass.DbContext;
+            DbContext dbManager = TransitClass.DbContext;
             string command = "INSERT INTO [dbo].[Medicaments]([Name],[Price]) VALUES ('" + name + "','" + price + "')";
-            dbManager.CommExecuteNonQuery(command, dbManager.ConnectionString);
+            dbManager.CommExecuteNonQuery(command);
             Console.WriteLine("Нажмите любую клавишу для продолжения");
             return "Работа с товарами";
         }
         public static string DeleteMedicament()
         {
-            DbManager dbManager = TransitClass.DbContext;
+            DbContext dbManager = TransitClass.DbContext;
 
             Console.WriteLine("Медикамент удален");
             return "Работа с товарами";
