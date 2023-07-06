@@ -1,6 +1,7 @@
 ﻿using PharmacyApp.Controllers;
 using PharmacyApp.DAL;
 using PharmacyApp.Menus;
+using PharmacyApp.Pages;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;

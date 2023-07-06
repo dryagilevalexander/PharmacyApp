@@ -19,6 +19,12 @@ namespace PharmacyApp.Models
             Price = price;
         }
 
+        public Medicament(string name, decimal price)
+        {
+            Name = name;
+            Price = price;
+        }
+
         public Medicament()
         {
         }

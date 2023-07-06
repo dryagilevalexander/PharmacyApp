@@ -11,6 +11,9 @@ using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Cryptography.X509Certificates;
 using PharmacyApp.Models;
+using System.Data;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 
 namespace PharmacyApp.DAL
 {
@@ -72,6 +75,25 @@ namespace PharmacyApp.DAL
                 while (dbName == "");
 
 
+
+                _connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=master;Integrated Security=True;";
+
+
+                string createDbCommand = "CREATE DATABASE " + dbName;
+                int checkDatabaseAvailability = 0;
+
+                try
+                {
+                    CommExecuteNonQuery(createDbCommand);
+                }
+                catch (SqlException ex)
+                {
+                   Console.WriteLine("Не удалось установить соединение с сервером баз данных");
+                    Console.WriteLine(ex.Message);
+                    Console.ReadKey();
+                    Environment.Exit(0);
+                }
+
                 try
                 {
                     Preferences pref = new Preferences(serverName, dbName);
@@ -84,27 +106,17 @@ namespace PharmacyApp.DAL
                 {
                     Console.WriteLine("Возникла ошибка: " + e.Message);
                     Console.WriteLine("Завершение выполнения программы.");
+                    Console.ReadKey();
+                    Environment.Exit(0);
                 }
 
-                _connectionString = @"Server=.\" + serverName + ";Initial Catalog=master;Integrated Security=True";
-                string createDbCommand = "CREATE DATABASE " + dbName;
-                int checkDatabaseAvailability = 0;
-
-                try
-                {
-                    CommExecuteNonQuery(createDbCommand);
-                }
-                catch (SqlException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
 
                 _connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" + dbName + ";Integrated Security=True";
 
 
-                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Medicaments')) CREATE TABLE [dbo].[Medicaments]([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar](50) NULL, [Price] [decimal](18, 0) NULL, CONSTRAINT [PK_Medicaments] PRIMARY KEY NONCLUSTERED(Id))";
+                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Medicaments')) CREATE TABLE [dbo].[Medicaments]([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar](50) NULL, [Price] [money] NULL, CONSTRAINT [PK_Medicaments] PRIMARY KEY NONCLUSTERED(Id))";
                 CommExecuteNonQuery(command);
-                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Pharmacies')) CREATE TABLE [dbo].[Pharmacies] ([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar] (50) NULL, [Address][nvarchar] (100) NULL, [Phone][nvarchar] (20) NULL, CONSTRAINT[PK_Pharmacies] PRIMARY KEY NONCLUSTERED(Id))";
+                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Pharmacies')) CREATE TABLE [dbo].[Pharmacies] ([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar] (50) NULL, [Address][nvarchar] (100) NULL, [Phone][nvarchar] (12) NULL, CONSTRAINT[PK_Pharmacies] PRIMARY KEY NONCLUSTERED(Id))";
                 CommExecuteNonQuery(command);
                 command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Stores')) CREATE TABLE [dbo].[Stores]([Id] [int] NOT NULL IDENTITY(1,1), [PharmId] [int] NOT NULL, [Name] [nvarchar](50) NULL, CONSTRAINT [PK_Stores] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Pharmacies_Stores] FOREIGN KEY([PharmId]) REFERENCES [dbo].[Pharmacies] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
                 CommExecuteNonQuery(command);
@@ -112,11 +124,16 @@ namespace PharmacyApp.DAL
                 CommExecuteNonQuery(command);
 
                 Console.Clear();
-                Console.WriteLine("Добавить тестовое заполнение базы данных (y/n)?");
+#if DEBUG
+                Console.Write("Добавить тестовое заполнение базы данных (y/n)?: ");
                 if (Console.ReadKey().Key == ConsoleKey.Y)
                 {
                     FillTestSet();
                 }
+                Console.WriteLine("\r\nТестовый набор данных добавлен. Нажмите любую клавишу для продолжения.");
+                Console.ReadKey();
+                Console.Clear();
+#endif
 
             }
             else
@@ -137,13 +154,15 @@ namespace PharmacyApp.DAL
                     {
                         File.Delete("pref.txt");
                         Console.WriteLine("Файл настроек поврежден. Приложение будет закрыто. Откройте его повторно для продолжения.");
-
+                        Environment.Exit(0);
                     }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("Возникла ошибка: " + e.Message);
                     Console.WriteLine("Завершение выполнения программы.");
+                    Console.ReadKey();
+                    Environment.Exit(0);
                 }
             }
 
@@ -152,7 +171,7 @@ namespace PharmacyApp.DAL
             _connectionString=connectionString;
         }
 
-
+#if DEBUG
         public void FillTestSet()
 
         {
@@ -168,14 +187,14 @@ namespace PharmacyApp.DAL
 
             List<Medicament> medicaments = new List<Medicament>()
             {
-            new Medicament(1, "Аспирин", 55),
-            new Medicament(2, "Ношпа", 120),
-            new Medicament(3, "Нурофен", 221),
-            new Medicament(4, "Валериана", 21),
+            new Medicament(1, "Аспирин", 55.22m),
+            new Medicament(2, "Ношпа", 120.31m),
+            new Medicament(3, "Нурофен", 221.25m),
+            new Medicament(4, "Валериана", 21.32m),
             new Medicament(5, "Глицин", 71),
             new Medicament(6, "Кеторол", 320),
             new Medicament(7, "Аммиак", 10),
-            new Medicament(8, "Атропин", 45),
+            new Medicament(8, "Атропин", 45.15m),
             new Medicament(9, "Лидокаин", 200),
             new Medicament(10, "Амброксол", 180),
             new Medicament(11, "Атенолол", 89),
@@ -307,6 +326,7 @@ namespace PharmacyApp.DAL
                 new Consignment(74,18,3,392),
                 new Consignment(75,18,3,128),
             };
+#endif
 
             foreach (var pharmacy in pharmacies)
             {
@@ -316,7 +336,7 @@ namespace PharmacyApp.DAL
 
             foreach (var medicament in medicaments)
             {
-                command = "INSERT INTO [dbo].[Medicaments]([Name],[Price]) VALUES ('" + medicament.Name + "','" + medicament.Price + "')";
+                command = "INSERT INTO [dbo].[Medicaments]([Name],[Price]) VALUES ('" + medicament.Name + "','" + medicament.Price.ToString().Replace(",",".") + "')";
                 CommExecuteNonQuery(command);
             }
 
@@ -345,21 +365,41 @@ namespace PharmacyApp.DAL
         }
 
 
-        public void CommExecuteReader(string queryString, string connectionString)
+        public List<T>CommExecuteReader<T>(string queryString) where T : class, new()
         {
+            List<T> records = new List<T>();
+            Type myType = typeof(T);
             using (SqlConnection connection = new SqlConnection(
-                       connectionString))
+                       _connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
+                    int fieldCount = reader.FieldCount;
+
                     while (reader.Read())
                     {
-                        Console.WriteLine(string.Format("{0}", reader[0]));
+                        T obj = new T();
+
+                        foreach (PropertyInfo prop in myType.GetProperties(
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static))
+                        {
+                            for (int i = 0; i < fieldCount; i++)
+                            {
+                                if (reader.GetName(i)==prop.Name && reader[i].GetType().Name==prop.PropertyType.Name)
+                                { 
+                                var currentProp = myType.GetProperty(prop.Name);
+                                currentProp.SetValue(obj, reader[i]);
+                                }
+                            }
+
+                        }
+                        records.Add(obj);
                     }
                 }
             }
+            return records;
         }
     }
 }

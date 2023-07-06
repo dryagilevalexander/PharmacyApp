@@ -10,17 +10,17 @@ using System.Xml.Linq;
 
 namespace PharmacyApp.DAL.Repository
 {
-    public class MedicamentsRepository: IRepository<Medicament>
+    public class PharmaciesRepository: IRepository<Pharmacy>
     {
     DbContext _dbContext;
-        public MedicamentsRepository()
+        public PharmaciesRepository()
         {
             _dbContext = TransitClass.DbContext;
         }
 
-        public void Create(Medicament item)
+        public void Create(Pharmacy item)
         {
-            string command = "INSERT INTO [dbo].[Medicaments]([Name],[Price]) VALUES ('" + item.Name + "','" + item.Price.ToString().Replace(",",".") + "')";
+            string command = "INSERT INTO [dbo].[Pharmacies]([Name],[Address],[Phone]) VALUES ('" + item.Name + "','" + item.Address + "','" + item.Phone + "')";
             try 
             {
             _dbContext.CommExecuteNonQuery(command);
@@ -33,7 +33,7 @@ namespace PharmacyApp.DAL.Repository
 
         public void Delete(int id)
         {
-            string command = "DELETE FROM [dbo].[Medicaments] WHERE [Id] = '" + id + "'";
+            string command = "DELETE FROM [dbo].[Pharmacies] WHERE [Id] = '" + id + "'";
             try
             {
                 _dbContext.CommExecuteNonQuery(command);
@@ -44,15 +44,15 @@ namespace PharmacyApp.DAL.Repository
             }
         }
 
-        public List<Medicament> GetAll() 
+        public List<Pharmacy> GetAll() 
         {
-            string command = "SELECT * FROM [dbo].[Medicaments]";
-            List<Medicament> list = new List<Medicament>();
+            string command = "SELECT * FROM [dbo].[Pharmacies]";
+            List<Pharmacy> list = new List<Pharmacy>();
             
             List<List<string>> records = new List<List<string>>();
             try
             {
-                list = _dbContext.CommExecuteReader<Medicament>(command);
+                list = _dbContext.CommExecuteReader<Pharmacy>(command);
             }
             catch
             {
@@ -61,15 +61,15 @@ namespace PharmacyApp.DAL.Repository
             return list;
         }
 
-        public List<Medicament> GetById(int id)
+        public List<Pharmacy> GetById(int id)
         {
-            string command = "SELECT * FROM [dbo].[Medicaments] Where [Id] =" + id;
-            List<Medicament> list = new List<Medicament>();
+            string command = "SELECT * FROM [dbo].[Pharmacies] Where [Id] =" + id;
+            List<Pharmacy> list = new List<Pharmacy>();
 
             List<List<string>> records = new List<List<string>>();
             try
             {
-                list = _dbContext.CommExecuteReader<Medicament>(command);
+                list = _dbContext.CommExecuteReader<Pharmacy>(command);
             }
             catch
             {

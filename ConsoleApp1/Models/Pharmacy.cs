@@ -20,5 +20,16 @@ namespace PharmacyApp.Models
             Address = address;
             Phone = phone;
         }
+
+        public Pharmacy(string name, string address, string phone)
+        {
+            Name = name;
+            Address = address;
+            Phone = phone;
+        }
+
+        public Pharmacy()
+        {
+        }
     }
 }

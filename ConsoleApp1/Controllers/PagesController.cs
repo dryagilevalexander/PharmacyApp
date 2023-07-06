@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PharmacyApp.Pages;
 
 namespace PharmacyApp.Controllers
 {
@@ -14,28 +15,28 @@ namespace PharmacyApp.Controllers
             switch (pageName)
             {
                 case "Создать товар":
-                    result = Pages.CreateMedicament();
+                    result = new CreateMedicamentPage().Create();
                     break;
                 case "Удалить товар":
-                    result = Pages.DeleteMedicament();
+                    result = new DeleteMedicamentPage().Create();
                     break;
                 case "Создать аптеку":
-                    result = Pages.CreatePharmacy();
+                    result = new CreatePharmacyPage().Create();
                     break;
                 case "Удалить аптеку":
-                    result = Pages.DeletePharmacy();
+                    result = new DeletePharmacyPage().Create();
                     break;
                 case "Создать склад":
-                    result = Pages.CreateStore();
+                    result = new CreateStorePage().Create();
                     break;
                 case "Удалить склад":
-                    result = Pages.DeleteStore();
+                    result = new DeleteStorePage().Create();
                     break;
                 case "Создать партию":
-                    result = Pages.CreateConsignment();
+                    result = new CreateConsignmentPage().Create();
                     break;
                 case "Удалить партию":
-                    result = Pages.DeleteConsignment();
+                    result = new DeleteConsignmentPage().Create();
                     break;
             }
 
