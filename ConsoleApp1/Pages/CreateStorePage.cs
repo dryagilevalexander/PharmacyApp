@@ -19,8 +19,14 @@ namespace PharmacyApp.Pages
         {
             StoresRepository storeRepository = new StoresRepository();
             IRepository<Pharmacy> pharmRepository = new PharmaciesRepository();
-            List<Pharmacy> pharmacies = pharmRepository.GetAll();
             List<string> itemsMenu= new List<string>();
+
+            List<Pharmacy> pharmacies = pharmRepository.GetAll();
+            if(pharmacies.Count == 0)
+            {
+                Console.WriteLine("Аптеки отсутствуют. Создайте хотя бы одну аптеку!");
+                return "В главное меню";
+            }
             var sortedList = from p in pharmacies
                              orderby p.Id
                              select p;
@@ -30,7 +36,6 @@ namespace PharmacyApp.Pages
                 itemsMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
             }
             int pharmacyId = MenuController.CreateDbMenu(itemsMenu);
-            Console.WriteLine(pharmacyId);
             Console.Clear();
 
             Console.WriteLine("Добавление склада в базу данных");

@@ -77,6 +77,23 @@ namespace PharmacyApp.DAL.Repository
             return list;
         }
 
+        public List<Store> GetStoresByPharmacyId(int id)
+        {
+            string command = "SELECT * FROM [dbo].[Stores] Where [PharmId] =" + id;
+            List<Store> list = new List<Store>();
+
+            List<List<string>> records = new List<List<string>>();
+            try
+            {
+                list = _dbContext.CommExecuteReader<Store>(command);
+            }
+            catch
+            {
+                Console.WriteLine("Ошибка получения данных из базы");
+            }
+            return list;
+        }
+
         List<Store> GetAll()
         {
             string command = "SELECT * FROM [dbo].[Stores]";

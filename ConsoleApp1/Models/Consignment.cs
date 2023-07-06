@@ -20,5 +20,16 @@ namespace PharmacyApp.Models
             StoreId = storeId;
             CountMed = countMed;
         }
+
+        public Consignment(int medId, int storeId, int countMed)
+        {
+            MedId = medId;
+            StoreId = storeId;
+            CountMed = countMed;
+        }
+
+        public Consignment()
+        {
+        }
     }
 }
