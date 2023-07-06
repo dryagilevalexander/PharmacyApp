@@ -18,5 +18,15 @@ namespace PharmacyApp.Models
             PharmId = pharmId;
             Name = name;
         }
+
+        public Store(int pharmId, string name)
+        {
+            PharmId = pharmId;
+            Name = name;
+        }
+
+        public Store()
+        {
+        }
     }
 }

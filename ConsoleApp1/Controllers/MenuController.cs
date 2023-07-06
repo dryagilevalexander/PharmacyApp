@@ -43,5 +43,12 @@ namespace PharmacyApp.Controllers
             menu.Draw();
             Navigate(menu.WaitingForInput());
         }
+
+        public static int CreateDbMenu(List<string> items)
+        {
+            var menu = new Menu(new Point(Console.WindowWidth / 2 - items[0].Length / 2, Console.WindowHeight / 2 - items.Count() / 2), items);
+            menu.Draw();
+            return Convert.ToInt32(menu.WaitingForInput().Split(".")[0]);
+        }
     }
 }

@@ -49,7 +49,6 @@ namespace PharmacyApp.DAL.Repository
             string command = "SELECT * FROM [dbo].[Pharmacies]";
             List<Pharmacy> list = new List<Pharmacy>();
             
-            List<List<string>> records = new List<List<string>>();
             try
             {
                 list = _dbContext.CommExecuteReader<Pharmacy>(command);
