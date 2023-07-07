@@ -15,7 +15,7 @@ namespace PharmacyApp.Pages
         {
             List<ConsignmentViewModel> list = new List<ConsignmentViewModel>();
             StoresRepository storesRepository = new StoresRepository();
-            list = storesRepository.GetAllAndPharmacyInformation();
+           // list = storesRepository.GetAllAndPharmacyInformation();
 
             Console.WriteLine(new string('-', 15 + 25 + 25 + 40 + 4));
             Console.WriteLine("|{0,15}|{1,25}|{2,25}|{3,40}|", "Id", "Name", "PharmacyName", "PharmacyAddress");
@@ -23,10 +23,10 @@ namespace PharmacyApp.Pages
             var sortedList = from p in list
                              orderby p.Id
                              select p;
-            foreach (var store in sortedList)
-            {
-                Console.WriteLine("|{0,15}|{1,25}|{2,25}|{3,40}|", store.Id, store.Name, store.PharmacyName, store.PharmacyAddress);
-            }
+          //  foreach (var store in sortedList)
+          //  {
+          //      Console.WriteLine("|{0,15}|{1,25}|{2,25}|{3,40}|", store.Id, store.Name, store.PharmacyName, store.PharmacyAddress);
+          //  }
             Console.WriteLine(new string('-', 15 + 25 + 25 + 40 + 4));
 
             Console.Write("Введите Id склада для удаления: ");

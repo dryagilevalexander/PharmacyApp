@@ -369,8 +369,10 @@ namespace PharmacyApp.DAL
         {
             List<T> records = new List<T>();
             Type myType = typeof(T);
-            using (SqlConnection connection = new SqlConnection(
-                       _connectionString))
+            List<PropertyInfo> currentClassProps = myType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static).ToList();
+
+
+             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
@@ -382,14 +384,13 @@ namespace PharmacyApp.DAL
                     {
                         T obj = new T();
 
-                        foreach (PropertyInfo prop in myType.GetProperties(
-                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static))
+                        foreach (PropertyInfo prop in currentClassProps)
                         {
                             for (int i = 0; i < fieldCount; i++)
                             {
                                 if (reader.GetName(i)==prop.Name && reader[i].GetType().Name==prop.PropertyType.Name)
-                                { 
-                                var currentProp = myType.GetProperty(prop.Name);
+                                {
+                                var currentProp = currentClassProps.FirstOrDefault(x => x.Name == prop.Name);
                                 currentProp.SetValue(obj, reader[i]);
                                 }
                             }
