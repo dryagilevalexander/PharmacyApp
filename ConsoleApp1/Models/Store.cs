@@ -12,8 +12,8 @@ namespace PharmacyApp.Models
         public int PharmId { get; set; }
         public string Name { get; set; }
 
-        public string PharmacyName { get; set; }
-        public string PharmacyAddress { get; set; }
+        public string? PharmacyName { get; set; }
+        public string? PharmacyAddress { get; set; }
 
         public Store(int id, int pharmId, string name)
         {

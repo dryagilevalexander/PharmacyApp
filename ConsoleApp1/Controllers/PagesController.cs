@@ -9,7 +9,7 @@ namespace PharmacyApp.Controllers
 {
     public static class PagesController
     {
-        public static string RoutingPages(string pageName)
+        public static string Navigate(string pageName)
         {
             string result = string.Empty;
             switch (pageName)

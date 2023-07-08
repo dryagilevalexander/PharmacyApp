@@ -9,8 +9,6 @@ namespace PharmacyApp.Controllers
 {
     public static class MenuController
     {
-
-
         public static void Navigate(string menuItem)
         {
             Console.Clear();
@@ -32,7 +30,7 @@ namespace PharmacyApp.Controllers
                     CreateMenu(MainMenu.Items);
                     break;
                 default:
-                    Navigate(PagesController.RoutingPages(menuItem));
+                    Navigate(PagesController.Navigate(menuItem));
                     break;
             }
         }

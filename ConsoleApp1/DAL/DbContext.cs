@@ -44,7 +44,7 @@ namespace PharmacyApp.DAL
                 do
                 {
                     Console.Write("Введите имя сервера базы данных: ");
-                    serverName = Console.ReadLine();
+                    serverName = Utils.GetNameValue(50);
                     Console.Clear();
                     if (serverName == "")
                     {
@@ -60,7 +60,7 @@ namespace PharmacyApp.DAL
                 do
                 {
                     Console.Write("Введите имя базы данных: ");
-                    dbName = Console.ReadLine();
+                    dbName = Utils.GetNameValue(50);
                     Console.Clear();
 
                     if (dbName == "")
@@ -80,7 +80,6 @@ namespace PharmacyApp.DAL
 
 
                 string createDbCommand = "CREATE DATABASE " + dbName;
-                int checkDatabaseAvailability = 0;
 
                 try
                 {
@@ -116,7 +115,7 @@ namespace PharmacyApp.DAL
 
                 command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Medicaments')) CREATE TABLE [dbo].[Medicaments]([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar](50) NULL, [Price] [money] NULL, CONSTRAINT [PK_Medicaments] PRIMARY KEY NONCLUSTERED(Id))";
                 CommExecuteNonQuery(command);
-                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Pharmacies')) CREATE TABLE [dbo].[Pharmacies] ([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar] (50) NULL, [Address][nvarchar] (100) NULL, [Phone][nvarchar] (12) NULL, CONSTRAINT[PK_Pharmacies] PRIMARY KEY NONCLUSTERED(Id))";
+                command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Pharmacies')) CREATE TABLE [dbo].[Pharmacies] ([Id] [int] NOT NULL IDENTITY(1,1), [Name] [nvarchar] (50) NULL, [Address][nvarchar] (50) NULL, [Phone][nvarchar] (12) NULL, CONSTRAINT[PK_Pharmacies] PRIMARY KEY NONCLUSTERED(Id))";
                 CommExecuteNonQuery(command);
                 command = "IF (NOT EXISTS (SELECT *  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Stores')) CREATE TABLE [dbo].[Stores]([Id] [int] NOT NULL IDENTITY(1,1), [PharmId] [int] NOT NULL, [Name] [nvarchar](50) NULL, CONSTRAINT [PK_Stores] PRIMARY KEY NONCLUSTERED(Id), CONSTRAINT [FK_Pharmacies_Stores] FOREIGN KEY([PharmId]) REFERENCES [dbo].[Pharmacies] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE)";
                 CommExecuteNonQuery(command);
@@ -141,11 +140,11 @@ namespace PharmacyApp.DAL
                 try
                 {
                     StreamReader sr = new StreamReader("pref.txt");
-                    string prefValues = sr.ReadLine();
+                    string? prefValues = sr.ReadLine();
                     sr.Close();
-
-                    if (prefValues != "")
-                    {
+                    
+                    if(prefValues!=null)
+                    { 
                         Preferences pref = JsonSerializer.Deserialize<Preferences>(prefValues);
                         serverName = pref.ServerName;
                         dbName = pref.DbName;
@@ -159,7 +158,7 @@ namespace PharmacyApp.DAL
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Возникла ошибка: " + e.Message);
+                    Console.WriteLine("Файл настроек поврежден. Приложение будет закрыто. Откройте его повторно для продолжения.");
                     Console.WriteLine("Завершение выполнения программы.");
                     Console.ReadKey();
                     Environment.Exit(0);
@@ -390,7 +389,7 @@ namespace PharmacyApp.DAL
                             {
                                 if (reader.GetName(i)==prop.Name && reader[i].GetType().Name==prop.PropertyType.Name)
                                 {
-                                var currentProp = currentClassProps.FirstOrDefault(x => x.Name == prop.Name);
+                                PropertyInfo currentProp = currentClassProps.FirstOrDefault(x => x.Name == prop.Name);
                                 currentProp.SetValue(obj, reader[i]);
                                 }
                             }

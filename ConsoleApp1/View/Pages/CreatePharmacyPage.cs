@@ -16,13 +16,13 @@ namespace PharmacyApp.View.Pages
             string menuName = "Работа с аптеками";
             Console.WriteLine("Добавление аптеки в базу данных (для отмены операции нажмите ESC)");
             Console.Write("Введите наименование: ");
-            string result = Utils.GetNameValue(30);
+            string result = Utils.GetNameValue(29);
             if (result == "AbortOperation") return menuName;
             string name = result;
 
 
             Console.Write("Введите адрес: ");
-            result = Utils.GetAddressValue(50);
+            result = Utils.GetAddressValue(49);
             if (result == "AbortOperation") return menuName;
             string address = result;
 

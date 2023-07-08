@@ -40,9 +40,9 @@ namespace PharmacyApp.View.Pages
 
             Console.WriteLine("Добавление склада в базу данных (для отмены операции нажмите ESC)");
             Console.Write("Введите наименование: ");
-            string result = Utils.GetNameValue(50);
+            string result = Utils.GetNameValue(24);
             if (result == "AbortOperation") return "Работа со складами";
-            string? name = Utils.GetNameValue(50);
+            string? name = result;
 
             Store store = new Store(pharmacyId, name);
 

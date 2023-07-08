@@ -17,7 +17,7 @@ namespace PharmacyApp.View.Pages
             Console.WriteLine("Добавление медикамента в базу данных (для отмены операции нажмите ESC)");
 
             Console.Write("Введите наименование: ");
-            string result = Utils.GetNameValue(10);
+            string result = Utils.GetNameValue(30);
             if (result == "AbortOperation") return "Работа с товарами";
             name = result;
 
