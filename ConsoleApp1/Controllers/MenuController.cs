@@ -1,9 +1,20 @@
-﻿using PharmacyApp.View.Menu;
+﻿using PharmacyApp.DAL;
+using PharmacyApp.View.Menu;
 
 namespace PharmacyApp.Controllers
 {
     public class MenuController
     {
+        private DbContext _db;
+        public MenuController(DbContext db)
+        {
+            _db = db;
+        }
+
+        public MenuController()
+        {
+        }
+
         public void Navigate(string menuItem)
         {
             Console.Clear();
@@ -25,7 +36,7 @@ namespace PharmacyApp.Controllers
                     CreateMenu(MainMenu.Items);
                     break;
                 default:
-                    PagesController pagesController = new();
+                    PagesController pagesController = new(_db);
                     Navigate(pagesController.Navigate(menuItem));
                     pagesController.Dispose();
                     break;

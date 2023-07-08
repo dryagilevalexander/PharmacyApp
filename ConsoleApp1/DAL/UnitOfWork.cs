@@ -4,18 +4,23 @@ namespace PharmacyApp.DAL
 {
     public class UnitOfWork
     {
-        private DbContext db = TransitClass.DbContext;
+        private DbContext _db;
         private PharmaciesRepository pharmRepository;
         private StoresRepository storesRepository;
         private ConsignmentsRepository consRepository;
         private MedicamentsRepository medRepository;
+
+        public UnitOfWork(DbContext db)
+        {
+            _db = db;
+        }
 
         public PharmaciesRepository Pharmacies
         {
             get
             {
                 if (pharmRepository == null)
-                    pharmRepository = new PharmaciesRepository(db);
+                    pharmRepository = new PharmaciesRepository(_db);
                 return pharmRepository;
             }
         }
@@ -25,7 +30,7 @@ namespace PharmacyApp.DAL
             get
             {
                 if (storesRepository == null)
-                    storesRepository = new StoresRepository(db);
+                    storesRepository = new StoresRepository(_db);
                 return storesRepository;
             }
         }
@@ -35,7 +40,7 @@ namespace PharmacyApp.DAL
             get
             {
                 if (consRepository == null)
-                    consRepository = new ConsignmentsRepository(db);
+                    consRepository = new ConsignmentsRepository(_db);
                 return consRepository;
             }
         }
@@ -45,7 +50,7 @@ namespace PharmacyApp.DAL
             get
             {
                 if (medRepository == null)
-                    medRepository = new MedicamentsRepository(db);
+                    medRepository = new MedicamentsRepository(_db);
                 return medRepository;
             }
         }

@@ -5,11 +5,11 @@ namespace PharmacyApp.Controllers
 {
     public class PagesController: IDisposable
     {
-        UnitOfWork unitOfWork;
+        private UnitOfWork unitOfWork;
 
-        public PagesController()
+        public PagesController(DbContext db)
         {
-            unitOfWork = new UnitOfWork();
+            unitOfWork = new UnitOfWork(db);
         }
 
         public string Navigate(string pageName)
