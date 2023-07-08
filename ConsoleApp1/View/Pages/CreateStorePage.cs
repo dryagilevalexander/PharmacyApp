@@ -21,6 +21,7 @@ namespace PharmacyApp.View.Pages
             if (pharmacies.Count == 0)
             {
                 Console.WriteLine("Аптеки отсутствуют. Создайте хотя бы одну аптеку!");
+                Console.ReadKey();
                 return "В главное меню";
             }
             var sortedList = from p in pharmacies

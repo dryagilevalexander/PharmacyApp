@@ -23,6 +23,7 @@ namespace PharmacyApp.View.Pages
             if (pharmacies.Count == 0)
             {
                 Console.WriteLine("Аптеки отсутствуют. Создайте хотя бы одну аптеку!");
+                Console.ReadKey();
                 return "В главное меню";
             }
             var pharmaciesSortedList = from p in pharmacies
@@ -44,6 +45,7 @@ namespace PharmacyApp.View.Pages
             if (stores.Count == 0)
             {
                 Console.WriteLine("Склады отсутствуют. Создайте хотя бы один склад!");
+                Console.ReadKey();
                 return "В главное меню";
             }
             var storesSortedList = from p in stores
@@ -60,7 +62,7 @@ namespace PharmacyApp.View.Pages
 
 
 
-            Console.WriteLine("Добавление партии товара в базу данных (для отмены операции нажмите ESC)");
+            Console.WriteLine("Добавление партии товара в базу данных.");
 
             List<string> itemsMedMenu = new List<string>();
 
