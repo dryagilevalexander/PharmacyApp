@@ -1,15 +1,6 @@
 ﻿using PharmacyApp.Controllers;
 using PharmacyApp.DAL;
-using PharmacyApp.DAL.Repository;
-using PharmacyApp.View.Menu;
 using PharmacyApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PharmacyApp.View.Pages
 {

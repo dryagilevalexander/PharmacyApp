@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Data.SqlClient;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
-using static System.Net.Mime.MediaTypeNames;
-using System.Security.Cryptography.X509Certificates;
 using PharmacyApp.Models;
-using System.Data;
-using System.Diagnostics.Metrics;
 using System.Reflection;
 
 namespace PharmacyApp.DAL

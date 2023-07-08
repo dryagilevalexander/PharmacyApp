@@ -1,11 +1,6 @@
 ﻿using PharmacyApp.Controllers;
 using PharmacyApp.DAL;
-using PharmacyApp.View.Pages;
 using PharmacyApp.View.Menu;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Linq;
 
 
 namespace PharmacyApp
