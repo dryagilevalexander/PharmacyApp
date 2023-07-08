@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace PharmacyApp.DAL.Repository
 {
-    public class PharmaciesRepository: IRepository<Pharmacy>
+    public class PharmaciesRepository
     {
     DbContext _dbContext;
         public PharmaciesRepository()

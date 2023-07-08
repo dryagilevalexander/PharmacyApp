@@ -61,20 +61,9 @@ namespace PharmacyApp
             Draw();
         }
 
-        public void SetIndex(int index)
-        {
-            _selectedIndex = Math.Clamp(index, 0, _drives.Count - 1);
-            Draw();
-        }
-
         public string GetSelectedItem()
         {
             return _drives[_selectedIndex];
-        }
-
-        public void SetDrive(string drive)
-        {
-            SetIndex(_drives.IndexOf(drive));
         }
 
         public string WaitingForInput()
@@ -84,8 +73,6 @@ namespace PharmacyApp
             while (nameMenuItem == "")
             {
                 var keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Escape)
-                    break;
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.DownArrow:

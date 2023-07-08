@@ -3,8 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -44,9 +47,9 @@ namespace PharmacyApp.DAL.Repository
             }
         }
 
-        public List<Consignment> GetAllinStore(int id) 
+        public List<Consignment> GetAll() 
         {
-            string command = "SELECT * FROM [dbo].[Consignments] WHERE [StoreId] = '" + id + "'";
+            string command = "SELECT [Consignments].[Id] AS [Id], [Medicaments].[Name] AS MedName, [Stores].[Name] AS [StoreName], [Pharmacies].[Name] AS [PharmacyName], [Pharmacies].[Address] AS [PharmacyAddress] FROM [Consignments] INNER JOIN [Stores] ON [Stores].[Id]=[Consignments].[StoreId] INNER JOIN [Pharmacies] ON [Pharmacies].[Id]=[Stores].[PharmId] INNER JOIN [Medicaments] ON [Consignments].[MedId]=[Medicaments].[Id]";
             List<Consignment> list = new List<Consignment>();
             
             try
@@ -66,6 +69,22 @@ namespace PharmacyApp.DAL.Repository
             List<Consignment> list = new List<Consignment>();
 
             List<List<string>> records = new List<List<string>>();
+            try
+            {
+                list = _dbContext.CommExecuteReader<Consignment>(command);
+            }
+            catch
+            {
+                Console.WriteLine("Ошибка получения данных из базы");
+            }
+            return list;
+        }
+
+        public List<Consignment> GetGroupConsByPharmacyId(int id)
+        {
+            string command = "SELECT[Medicaments].[Id] AS [MedId], [Medicaments].[Name] AS [MedName], SUM([Consignments].[CountMed]) AS [CountMed] FROM[dbo].[Consignments] INNER JOIN[Medicaments] ON[Consignments].[MedId] =[Medicaments].[Id] INNER JOIN[Stores] ON[Stores].[Id] =[Consignments].[StoreId] INNER JOIN[Pharmacies] ON[Pharmacies].[Id] =[Stores].[PharmId] WHERE[Pharmacies].[Id] = '" + id + "' GROUP BY[Medicaments].[Id], [Medicaments].[Name]";
+            List <Consignment> list = new();
+
             try
             {
                 list = _dbContext.CommExecuteReader<Consignment>(command);

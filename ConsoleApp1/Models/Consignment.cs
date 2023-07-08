@@ -13,6 +13,10 @@ namespace PharmacyApp.Models
         public int StoreId { get; set; }
         public int CountMed { get; set; }
 
+        public string? MedName { get; set; }
+        public string? PharmacyName { get; set; }
+        public string? PharmacyAddress { get; set; }
+
         public Consignment(int id, int medId, int storeId, int countMed)
         {
             Id = id;

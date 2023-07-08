@@ -13,6 +13,8 @@ namespace PharmacyApp.Models
         public string Address { get; set; }
         public string Phone { get; set; }
 
+
+
         public Pharmacy(int id, string name, string address, string phone)
         {
             Id = id;

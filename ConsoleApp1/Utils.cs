@@ -17,6 +17,10 @@ namespace PharmacyApp
             do
             {
                 keyInfo = Console.ReadKey(true);
+                if(keyInfo.Key == ConsoleKey.Escape)
+                {
+                    return "AbortOperation";
+                }
                 if (char.IsDigit(keyInfo.KeyChar) && sb.Length < numberOfDigits)
                 {
                     sb.Insert(curOffset, keyInfo.KeyChar);
@@ -54,6 +58,10 @@ namespace PharmacyApp
             do
             {
                 keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    return "AbortOperation";
+                }
                 if ((char.IsDigit(keyInfo.KeyChar) || char.IsLetter(keyInfo.KeyChar) || char.IsWhiteSpace(keyInfo.KeyChar) || char.IsSymbol(keyInfo.KeyChar)) && sb.Length < numberOfChars && keyInfo.Key != ConsoleKey.Enter)
                 {
                     sb.Insert(curOffset, keyInfo.KeyChar);
@@ -91,6 +99,10 @@ namespace PharmacyApp
             do
             {
                 keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    return "AbortOperation";
+                }
                 if ((char.IsDigit(keyInfo.KeyChar) || char.IsLetter(keyInfo.KeyChar) || char.IsWhiteSpace(keyInfo.KeyChar) || char.IsSymbol(keyInfo.KeyChar) || char.IsPunctuation(keyInfo.KeyChar)) && sb.Length < numberOfChars && keyInfo.Key != ConsoleKey.Enter)
                 {
                     sb.Insert(curOffset, keyInfo.KeyChar);

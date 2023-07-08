@@ -44,14 +44,14 @@ namespace PharmacyApp.DAL.Repository
             }
         }
 
-        public List<StoreViewModel> GetAllAndPharmacyInformation() 
+        public List<Store> GetAll() 
         {
             string command = "SELECT [Stores].[Id], [stores].[Name], [Pharmacies].[Name] AS [PharmacyName], [Pharmacies].[Address] AS [PharmacyAddress] FROM [dbo].[Stores] INNER JOIN [dbo].[Pharmacies] ON [Stores].[PharmId]=[Pharmacies].[Id]";
-            List<StoreViewModel> list = new List<StoreViewModel>();
+            List<Store> list = new List<Store>();
             
             try
             {
-                list = _dbContext.CommExecuteReader<StoreViewModel>(command);
+                list = _dbContext.CommExecuteReader<Store>(command);
             }
             catch
             {
@@ -77,28 +77,12 @@ namespace PharmacyApp.DAL.Repository
             return list;
         }
 
-        public List<Store> GetStoresByPharmacyId(int id)
+        public List<Store> GetByParentId(int id)
         {
             string command = "SELECT * FROM [dbo].[Stores] Where [PharmId] =" + id;
             List<Store> list = new List<Store>();
 
             List<List<string>> records = new List<List<string>>();
-            try
-            {
-                list = _dbContext.CommExecuteReader<Store>(command);
-            }
-            catch
-            {
-                Console.WriteLine("Ошибка получения данных из базы");
-            }
-            return list;
-        }
-
-        List<Store> GetAll()
-        {
-            string command = "SELECT * FROM [dbo].[Stores]";
-            List<Store> list = new List<Store>();
-
             try
             {
                 list = _dbContext.CommExecuteReader<Store>(command);

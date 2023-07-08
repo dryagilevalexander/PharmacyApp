@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PharmacyApp.Pages;
+using PharmacyApp.View.Pages;
 
 namespace PharmacyApp.Controllers
 {
@@ -26,6 +26,9 @@ namespace PharmacyApp.Controllers
                 case "Удалить аптеку":
                     result = new DeletePharmacyPage().Create();
                     break;
+                case "Товары в аптеке":
+                    result = new MedInPharmacyPage().Create();
+                    break;
                 case "Создать склад":
                     result = new CreateStorePage().Create();
                     break;
@@ -39,8 +42,6 @@ namespace PharmacyApp.Controllers
                     result = new DeleteConsignmentPage().Create();
                     break;
             }
-
-            Console.ReadKey();
             return result;
         }
     }

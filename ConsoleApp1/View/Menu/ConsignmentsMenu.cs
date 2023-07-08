@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PharmacyApp.Menus
+namespace PharmacyApp.View.Menu
 {
-    public static class PharmaciesMenu
+    public static class ConsignmentsMenu
     {
         public static List<string> Items = new List<string>()
             {
-                "Создать аптеку",
-                "Удалить аптеку",
+                "Создать партию",
+                "Удалить партию",
                 "В главное меню"
             };
     }

@@ -125,14 +125,14 @@ namespace PharmacyApp.DAL
 
                 Console.Clear();
 #if DEBUG
-                Console.Write("Добавить тестовое заполнение базы данных (y/n)?: ");
+                Console.Write("Добавить тестовое заполнение базы данных (y/любая другая клавиша)?: ");
                 if (Console.ReadKey().Key == ConsoleKey.Y)
                 {
-                    FillTestSet();
-                }
+                FillTestSet();
                 Console.WriteLine("\r\nТестовый набор данных добавлен. Нажмите любую клавишу для продолжения.");
                 Console.ReadKey();
                 Console.Clear();
+                }
 #endif
 
             }
@@ -222,109 +222,109 @@ namespace PharmacyApp.DAL
 
             List<Consignment> consignments = new List<Consignment>()
             {
-                new Consignment(1,1,3,500),
+                new Consignment(1,1,1,500),
                 new Consignment(2,1,3,500),
-                new Consignment(3,1,3,500),
-                new Consignment(4,1,3,500),
+                new Consignment(3,1,4,500),
+                new Consignment(4,1,5,500),
 
-                new Consignment(5,2,3,200),
-                new Consignment(6,2,3,150),
-                new Consignment(7,2,3,300),
-                new Consignment(8,2,3,120),
-                new Consignment(9,2,3,400),
+                new Consignment(5,2,2,200),
+                new Consignment(6,2,4,150),
+                new Consignment(7,2,6,300),
+                new Consignment(8,2,7,120),
+                new Consignment(9,2,8,400),
 
-                new Consignment(10,3,3,1500),
+                new Consignment(10,3,8,1500),
                 new Consignment(11,3,3,1020),
-                new Consignment(12,3,3,200),
-                new Consignment(13,3,3,300),
-                new Consignment(14,3,3,600),
+                new Consignment(12,3,4,200),
+                new Consignment(13,3,5,300),
+                new Consignment(14,3,4,600),
                 new Consignment(15,3,3,500),
-                new Consignment(16,3,3,250),
-                new Consignment(17,3,3,100),
+                new Consignment(16,3,2,250),
+                new Consignment(17,3,1,100),
 
-                new Consignment(18,4,3,400),
-                new Consignment(19,4,3,170),
+                new Consignment(18,4,7,400),
+                new Consignment(19,4,8,170),
 
-                new Consignment(20,5,3,300),
-                new Consignment(21,5,3,250),
-                new Consignment(22,5,3,1020),
-                new Consignment(23,5,3,200),
+                new Consignment(20,5,7,300),
+                new Consignment(21,5,6,250),
+                new Consignment(22,5,4,1020),
+                new Consignment(23,5,8,200),
 
-                new Consignment(24,6,3,1500),
+                new Consignment(24,6,1,1500),
                 new Consignment(25,6,3,400),
-                new Consignment(26,6,3,200),
-                new Consignment(27,6,3,430),
-                new Consignment(28,6,3,320),
-                new Consignment(29,6,3,180),
-                new Consignment(30,6,3,230),
+                new Consignment(26,6,2,200),
+                new Consignment(27,6,1,430),
+                new Consignment(28,6,5,320),
+                new Consignment(29,6,4,180),
+                new Consignment(30,6,6,230),
 
-                new Consignment(31,7,3,170),
-                new Consignment(32,7,3,500),
-                new Consignment(33,7,3,450),
-                new Consignment(34,7,3,520),
-                new Consignment(35,7,3,710),
+                new Consignment(31,7,8,170),
+                new Consignment(32,7,4,500),
+                new Consignment(33,7,5,450),
+                new Consignment(34,7,8,520),
+                new Consignment(35,7,1,710),
                 new Consignment(36,7,3,860),
 
-                new Consignment(37,8,3,270),
-                new Consignment(38,8,3,350),
-                new Consignment(39,8,3,450),
-                new Consignment(40,8,3,1000),
+                new Consignment(37,8,4,270),
+                new Consignment(38,8,5,350),
+                new Consignment(39,8,2,450),
+                new Consignment(40,8,8,1000),
 
-                new Consignment(41,9,3,281),
-                new Consignment(42,9,3,457),
-                new Consignment(43,9,3,200),
-                new Consignment(44,9,3,510),
-                new Consignment(45,9,3,211),
-                new Consignment(46,9,3,301),
-                new Consignment(47,9,3,1700),
+                new Consignment(41,9,6,281),
+                new Consignment(42,9,5,457),
+                new Consignment(43,9,4,200),
+                new Consignment(44,9,6,510),
+                new Consignment(45,9,7,211),
+                new Consignment(46,9,1,301),
+                new Consignment(47,9,2,1700),
 
-                new Consignment(48,10,3,450),
+                new Consignment(48,10,4,450),
                 new Consignment(49,10,3,125),
                 new Consignment(50,10,3,200),
 
-                new Consignment(51,11,3,820),
-                new Consignment(52,11,3,123),
-                new Consignment(53,11,3,400),
+                new Consignment(51,11,2,820),
+                new Consignment(52,11,1,123),
+                new Consignment(53,11,6,400),
 
-                new Consignment(54,12,3,331),
-                new Consignment(55,12,3,406),
+                new Consignment(54,12,4,331),
+                new Consignment(55,12,5,406),
                 new Consignment(56,12,3,721),
-                new Consignment(57,12,3,492),
-                new Consignment(58,12,3,344),
-                new Consignment(59,12,3,532),
+                new Consignment(57,12,5,492),
+                new Consignment(58,12,6,344),
+                new Consignment(59,12,1,532),
 
                 new Consignment(60,13,3,129),
-                new Consignment(61,13,3,287),
-                new Consignment(62,13,3,897),
-                new Consignment(63,13,3,478),
-                new Consignment(64,13,3,631),
-                new Consignment(65,13,3,754),
-                new Consignment(66,13,3,554),
+                new Consignment(61,13,2,287),
+                new Consignment(62,13,7,897),
+                new Consignment(63,13,8,478),
+                new Consignment(64,13,2,631),
+                new Consignment(65,13,5,754),
+                new Consignment(66,13,6,554),
 
-                new Consignment(67,14,3,891),
-                new Consignment(68,14,3,331),
-                new Consignment(69,14,3,1299),
-                new Consignment(70,14,3,223),
+                new Consignment(67,14,4,891),
+                new Consignment(68,14,2,331),
+                new Consignment(69,14,6,1299),
+                new Consignment(70,14,1,223),
 
-                new Consignment(71,15,3,476),
-                new Consignment(72,15,3,327),
+                new Consignment(71,15,5,476),
+                new Consignment(72,15,7,327),
                 new Consignment(73,15,3,891),
 
 
-                new Consignment(74,16,3,500),
-                new Consignment(75,16,3,321),
-                new Consignment(76,16,3,287),
-                new Consignment(77,16,3,589),
-                new Consignment(78,16,3,432),
-                new Consignment(79,16,3,894),
+                new Consignment(74,16,4,500),
+                new Consignment(75,16,2,321),
+                new Consignment(76,16,6,287),
+                new Consignment(77,16,7,589),
+                new Consignment(78,16,1,432),
+                new Consignment(79,16,4,894),
 
-                new Consignment(80,17,3,337),
-                new Consignment(71,17,3,482),
-                new Consignment(72,17,3,982),
-                new Consignment(73,17,3,748),
+                new Consignment(80,17,1,337),
+                new Consignment(71,17,5,482),
+                new Consignment(72,17,7,982),
+                new Consignment(73,17,4,748),
 
-                new Consignment(74,18,3,392),
-                new Consignment(75,18,3,128),
+                new Consignment(74,18,2,392),
+                new Consignment(75,18,5,128),
             };
 #endif
 

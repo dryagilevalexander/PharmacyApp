@@ -8,16 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PharmacyApp.Pages
+namespace PharmacyApp.View.Pages
 {
     public class CreateConsignmentPage : IPage
     {
         public string Create()
         {
-            IRepository<Medicament> medicamentsRepository = new MedicamentsRepository();
+            MedicamentsRepository medicamentsRepository = new MedicamentsRepository();
             ConsignmentsRepository consignmentsRepository = new ConsignmentsRepository();
             StoresRepository storesRepository = new StoresRepository();
-            IRepository<Pharmacy> pharmRepository = new PharmaciesRepository();
+            PharmaciesRepository pharmRepository = new PharmaciesRepository();
 
             List<string> itemsPharmaciesMenu = new List<string>();
 
@@ -28,8 +28,8 @@ namespace PharmacyApp.Pages
                 return "В главное меню";
             }
             var pharmaciesSortedList = from p in pharmacies
-                             orderby p.Id
-                             select p;
+                                       orderby p.Id
+                                       select p;
 
             foreach (var pharmacyItem in pharmaciesSortedList)
             {
@@ -42,15 +42,15 @@ namespace PharmacyApp.Pages
 
             List<string> itemsStoresMenu = new List<string>();
 
-            List<Store> stores = storesRepository.GetStoresByPharmacyId(pharmacyId);
+            List<Store> stores = storesRepository.GetByParentId(pharmacyId);
             if (stores.Count == 0)
             {
                 Console.WriteLine("Склады отсутствуют. Создайте хотя бы один склад!");
                 return "В главное меню";
             }
             var storesSortedList = from p in stores
-                             orderby p.Id
-                             select p;
+                                   orderby p.Id
+                                   select p;
 
             foreach (var storeItem in storesSortedList)
             {
@@ -62,7 +62,7 @@ namespace PharmacyApp.Pages
 
 
 
-            Console.WriteLine("Добавление партии товара в базу данных");
+            Console.WriteLine("Добавление партии товара в базу данных (для отмены операции нажмите ESC)");
 
             List<string> itemsMedMenu = new List<string>();
 
@@ -73,8 +73,8 @@ namespace PharmacyApp.Pages
                 return "В главное меню";
             }
             var medicamentsSortedList = from p in medicaments
-                                   orderby p.Id
-                                   select p;
+                                        orderby p.Id
+                                        select p;
 
             foreach (var medicamentItem in medicamentsSortedList)
             {
@@ -84,21 +84,19 @@ namespace PharmacyApp.Pages
             Console.Clear();
 
 
-
             Console.Write("Введите количество: ");
-            int? countMed = Convert.ToInt32(Utils.GetValue(10));
-            if (countMed==null)
-            {
-                Console.Clear();
-                Console.WriteLine("Не было введено количество товара. Нажмите любую клавишу для продолжения");
-                return "Работа с партиями";
-            }
-            Consignment consignment = new Consignment(medicamentId, storeId, countMed.Value);
+
+            string result = Utils.GetValue(9);
+            if (result == "AbortOperation") return "Работа с партиями";
+            int countMed = Convert.ToInt32(result);
+
+            Consignment consignment = new Consignment(medicamentId, storeId, countMed);
 
             consignmentsRepository.Create(consignment);
 
             Console.WriteLine("Партия успешно добавлена.");
             Console.WriteLine("Нажмите любую клавишу для продолжения.");
+            Console.ReadKey();
             return "Работа с партиями";
         }
     }
