@@ -5,7 +5,7 @@ namespace PharmacyApp.Controllers
 {
     public class MenuController
     {
-        private DbContext _db;
+        private DbContext? _db;
         public MenuController(DbContext db)
         {
             _db = db;
