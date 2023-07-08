@@ -70,6 +70,7 @@ namespace PharmacyApp.View.Pages
             if (medicaments.Count == 0)
             {
                 Console.WriteLine("Медикаменты отсутствуют. Создайте хотя бы один медикамент!");
+                Console.ReadKey();
                 return "В главное меню";
             }
             var medicamentsSortedList = from p in medicaments
