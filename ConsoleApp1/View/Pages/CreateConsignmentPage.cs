@@ -39,7 +39,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsPharmaciesMenu.Add(pharmacyItem.Id + ". " + pharmacyItem.Name + " " + pharmacyItem.Address);
             }
-            int pharmacyId = MenuController.CreateDbMenu(itemsPharmaciesMenu);
+            int pharmacyId = new MenuController().CreateDbMenu(itemsPharmaciesMenu);
             Console.Clear();
 
 
@@ -60,7 +60,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsStoresMenu.Add(storeItem.Id + ". " + storeItem.Name);
             }
-            int storeId = MenuController.CreateDbMenu(itemsStoresMenu);
+            int storeId = new MenuController().CreateDbMenu(itemsStoresMenu);
             Console.Clear();
 
 
@@ -84,7 +84,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsMedMenu.Add(medicamentItem.Id + ". " + medicamentItem.Name);
             }
-            int medicamentId = MenuController.CreateDbMenu(itemsMedMenu);
+            int medicamentId = new MenuController().CreateDbMenu(itemsMedMenu);
             Console.Clear();
 
 

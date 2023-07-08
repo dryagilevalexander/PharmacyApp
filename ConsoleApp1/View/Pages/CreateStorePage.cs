@@ -40,7 +40,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
             }
-            int pharmacyId = MenuController.CreateDbMenu(itemsMenu);
+            int pharmacyId = new MenuController().CreateDbMenu(itemsMenu);
             Console.Clear();
 
             Console.WriteLine("Добавление склада в базу данных (для отмены операции нажмите ESC)");

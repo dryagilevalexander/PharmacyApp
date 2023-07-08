@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PharmacyApp.DAL
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork
     {
         private DbContext db = TransitClass.DbContext;
         private PharmaciesRepository pharmRepository;

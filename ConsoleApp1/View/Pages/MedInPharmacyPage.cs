@@ -36,7 +36,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
             }
-            int pharmacyId = MenuController.CreateDbMenu(itemsMenu);
+            int pharmacyId = new MenuController().CreateDbMenu(itemsMenu);
             Console.Clear();
 
             List<Consignment> list = _unitOfWork.Consignments.GetGroupConsByPharmacyId(pharmacyId);

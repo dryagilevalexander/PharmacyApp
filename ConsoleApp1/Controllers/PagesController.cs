@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using PharmacyApp.DAL;
@@ -8,7 +9,7 @@ using PharmacyApp.View.Pages;
 
 namespace PharmacyApp.Controllers
 {
-    public class PagesController
+    public class PagesController: IDisposable
     {
         UnitOfWork unitOfWork;
 
@@ -51,9 +52,13 @@ namespace PharmacyApp.Controllers
                     result = new DeleteConsignmentPage(unitOfWork).Create();
                     break;
             }
-
-            unitOfWork.Dispose();
             return result;
+        }
+
+        public void Dispose()
+        {
+            unitOfWork.Dispose();
+            Dispose();
         }
     }
 }

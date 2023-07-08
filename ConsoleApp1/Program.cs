@@ -17,7 +17,7 @@ namespace PharmacyApp
             DbContext db = DbContext.getInstance();
             db.InitializeDb();
             TransitClass.DbContext = db;
-            MenuController.CreateMenu(MainMenu.Items);
+            new MenuController().CreateMenu(MainMenu.Items);
         }
     }
 }

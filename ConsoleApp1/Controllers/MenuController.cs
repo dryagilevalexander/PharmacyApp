@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PharmacyApp.Controllers
 {
-    public static class MenuController
+    public class MenuController
     {
-        public static void Navigate(string menuItem)
+        public void Navigate(string menuItem)
         {
             Console.Clear();
             switch (menuItem)
@@ -30,19 +30,21 @@ namespace PharmacyApp.Controllers
                     CreateMenu(MainMenu.Items);
                     break;
                 default:
-                    Navigate(new PagesController().Navigate(menuItem));
+                    PagesController pagesController = new();
+                    Navigate(pagesController.Navigate(menuItem));
+                    pagesController.Dispose();
                     break;
             }
         }
 
-        public static void CreateMenu(List<string> items)
+        public void CreateMenu(List<string> items)
         {
             var menu = new Menu(new Point(Console.WindowWidth / 2 - items[0].Length / 2, Console.WindowHeight / 2 - items.Count() / 2), items);
             menu.Draw();
             Navigate(menu.WaitingForInput());
         }
 
-        public static int CreateDbMenu(List<string> items)
+        public int CreateDbMenu(List<string> items)
         {
             var menu = new Menu(new Point(Console.WindowWidth / 2 - items[0].Length / 2, Console.WindowHeight / 2 - items.Count() / 2), items);
             menu.Draw();
