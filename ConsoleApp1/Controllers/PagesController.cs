@@ -51,6 +51,8 @@ namespace PharmacyApp.Controllers
                     result = new DeleteConsignmentPage(unitOfWork).Create();
                     break;
             }
+
+            unitOfWork.Dispose();
             return result;
         }
     }
