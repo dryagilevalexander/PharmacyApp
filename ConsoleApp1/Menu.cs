@@ -24,7 +24,6 @@ namespace PharmacyApp
         private readonly Point _position;
         private readonly List<string> _drives;
         private int _selectedIndex;
-        private string _menuName;
 
         public string Drive => _drives[_selectedIndex];
 
