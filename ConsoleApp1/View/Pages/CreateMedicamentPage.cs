@@ -11,6 +11,13 @@ namespace PharmacyApp.View.Pages
 {
     public class CreateMedicamentPage : IPage
     {
+        UnitOfWork _unitOfWork;
+
+        public CreateMedicamentPage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         public string Create()
         {
             string? name = "";
@@ -32,8 +39,7 @@ namespace PharmacyApp.View.Pages
             string priceKop = result;
 
             Medicament medicament = new Medicament(name, decimal.Parse(priceRub + "," + priceKop));
-            MedicamentsRepository medRepository = new MedicamentsRepository();
-            medRepository.Create(medicament);
+            _unitOfWork.Medicaments.Create(medicament);
 
             Console.WriteLine("Наименование продукта: " + medicament.Name);
             Console.WriteLine("Цена продукта: " + medicament.Price);

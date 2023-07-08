@@ -15,10 +15,10 @@ namespace PharmacyApp.DAL.Repository
 {
     public class ConsignmentsRepository
     {
-    DbContext _dbContext;
-        public ConsignmentsRepository()
+        private DbContext _db;
+        public ConsignmentsRepository(DbContext db)
         {
-            _dbContext = TransitClass.DbContext;
+            _db = db;
         }
 
         public void Create(Consignment item)
@@ -26,7 +26,7 @@ namespace PharmacyApp.DAL.Repository
             string command = "INSERT INTO [dbo].[Consignments]([MedId],[StoreId],[CountMed]) VALUES ('" + item.MedId + "','" + item.StoreId + "','" + item.CountMed + "')";
             try 
             {
-            _dbContext.CommExecuteNonQuery(command);
+            _db.CommExecuteNonQuery(command);
             }
             catch
             { 
@@ -39,7 +39,7 @@ namespace PharmacyApp.DAL.Repository
             string command = "DELETE FROM [dbo].[Consignments] WHERE [Id] = '" + id + "'";
             try
             {
-                _dbContext.CommExecuteNonQuery(command);
+                _db.CommExecuteNonQuery(command);
             }
             catch
             {
@@ -54,7 +54,7 @@ namespace PharmacyApp.DAL.Repository
             
             try
             {
-                list = _dbContext.CommExecuteReader<Consignment>(command);
+                list = _db.CommExecuteReader<Consignment>(command);
             }
             catch
             {
@@ -71,7 +71,7 @@ namespace PharmacyApp.DAL.Repository
             List<List<string>> records = new List<List<string>>();
             try
             {
-                list = _dbContext.CommExecuteReader<Consignment>(command);
+                list = _db.CommExecuteReader<Consignment>(command);
             }
             catch
             {
@@ -87,7 +87,7 @@ namespace PharmacyApp.DAL.Repository
 
             try
             {
-                list = _dbContext.CommExecuteReader<Consignment>(command);
+                list = _db.CommExecuteReader<Consignment>(command);
             }
             catch
             {

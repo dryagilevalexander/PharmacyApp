@@ -12,10 +12,10 @@ namespace PharmacyApp.DAL.Repository
 {
     public class StoresRepository
     {
-    DbContext _dbContext;
-        public StoresRepository()
+     private DbContext _db;
+        public StoresRepository(DbContext db)
         {
-            _dbContext = TransitClass.DbContext;
+            _db = db;
         }
 
         public void Create(Store item)
@@ -23,7 +23,7 @@ namespace PharmacyApp.DAL.Repository
             string command = "INSERT INTO [dbo].[Stores]([PharmId],[Name]) VALUES ('" + item.PharmId + "','" + item.Name + "')";
             try 
             {
-            _dbContext.CommExecuteNonQuery(command);
+            _db.CommExecuteNonQuery(command);
             }
             catch
             { 
@@ -36,7 +36,7 @@ namespace PharmacyApp.DAL.Repository
             string command = "DELETE FROM [dbo].[Stores] WHERE [Id] = '" + id + "'";
             try
             {
-                _dbContext.CommExecuteNonQuery(command);
+                _db.CommExecuteNonQuery(command);
             }
             catch
             {
@@ -51,7 +51,7 @@ namespace PharmacyApp.DAL.Repository
             
             try
             {
-                list = _dbContext.CommExecuteReader<Store>(command);
+                list = _db.CommExecuteReader<Store>(command);
             }
             catch
             {
@@ -68,7 +68,7 @@ namespace PharmacyApp.DAL.Repository
             List<List<string>> records = new List<List<string>>();
             try
             {
-                list = _dbContext.CommExecuteReader<Store>(command);
+                list = _db.CommExecuteReader<Store>(command);
             }
             catch
             {
@@ -85,7 +85,7 @@ namespace PharmacyApp.DAL.Repository
             List<List<string>> records = new List<List<string>>();
             try
             {
-                list = _dbContext.CommExecuteReader<Store>(command);
+                list = _db.CommExecuteReader<Store>(command);
             }
             catch
             {

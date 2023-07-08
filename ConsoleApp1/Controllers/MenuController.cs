@@ -30,7 +30,7 @@ namespace PharmacyApp.Controllers
                     CreateMenu(MainMenu.Items);
                     break;
                 default:
-                    Navigate(PagesController.Navigate(menuItem));
+                    Navigate(new PagesController().Navigate(menuItem));
                     break;
             }
         }

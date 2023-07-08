@@ -11,11 +11,17 @@ namespace PharmacyApp.View.Pages
 {
     public class DeleteConsignmentPage
     {
+        UnitOfWork _unitOfWork;
+
+        public DeleteConsignmentPage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         public string Create()
         {
             List<Consignment> list = new List<Consignment>();
-            ConsignmentsRepository consignmentsRepository = new ConsignmentsRepository();
-            list = consignmentsRepository.GetAll();
+            list = _unitOfWork.Consignments.GetAll();
 
             Console.WriteLine(new string('-', 15 + 25 + 25 + 40 + 4));
             Console.WriteLine("|{0,15}|{1,25}|{2,25}|{3,40}|", "Id", "Name", "PharmacyName", "PharmacyAddress");
@@ -35,9 +41,9 @@ namespace PharmacyApp.View.Pages
             if (result == "AbortOperation") return "Работа с партиями";
             int id = Convert.ToInt32(result);
 
-            if (consignmentsRepository.GetById(id).Count != 0)
+            if (_unitOfWork.Consignments.GetById(id).Count != 0)
             {
-                consignmentsRepository.Delete(id);
+                _unitOfWork.Consignments.Delete(id);
                 Console.WriteLine("Партия с id={0} успешно удалена", id);
                 Console.WriteLine("Для продолжения нажмите любую клавишу");
             }

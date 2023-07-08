@@ -12,12 +12,17 @@ namespace PharmacyApp.View.Pages
 {
     public class MedInPharmacyPage : IPage
     {
+        UnitOfWork _unitOfWork;
+
+        public MedInPharmacyPage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         public string Create()
         {
-            PharmaciesRepository pharmRepository = new();
             List<string> itemsMenu = new List<string>();
 
-            List<Pharmacy> pharmacies = pharmRepository.GetAll();
+            List<Pharmacy> pharmacies = _unitOfWork.Pharmacies.GetAll();
             if (pharmacies.Count == 0)
             {
                 Console.WriteLine("Аптеки отсутствуют. Создайте хотя бы одну аптеку!");
@@ -34,8 +39,7 @@ namespace PharmacyApp.View.Pages
             int pharmacyId = MenuController.CreateDbMenu(itemsMenu);
             Console.Clear();
 
-            ConsignmentsRepository consRepository = new();
-            List<Consignment> list = consRepository.GetGroupConsByPharmacyId(pharmacyId);
+            List<Consignment> list = _unitOfWork.Consignments.GetGroupConsByPharmacyId(pharmacyId);
 
             Console.WriteLine(new string('-', 15 + 40 + 40 + 4));
             Console.WriteLine("|{0,15}|{1,40}|{2,40}|", "Id", "MedicamentName", "Count");

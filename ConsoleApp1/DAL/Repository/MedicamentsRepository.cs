@@ -12,10 +12,10 @@ namespace PharmacyApp.DAL.Repository
 {
     public class MedicamentsRepository
     {
-    DbContext _dbContext;
-        public MedicamentsRepository()
+     private DbContext _db;
+        public MedicamentsRepository(DbContext db)
         {
-            _dbContext = TransitClass.DbContext;
+            _db = db;
         }
 
         public void Create(Medicament item)
@@ -23,7 +23,7 @@ namespace PharmacyApp.DAL.Repository
             string command = "INSERT INTO [dbo].[Medicaments]([Name],[Price]) VALUES ('" + item.Name + "','" + item.Price.ToString().Replace(",",".") + "')";
             try 
             {
-            _dbContext.CommExecuteNonQuery(command);
+            _db.CommExecuteNonQuery(command);
             }
             catch
             { 
@@ -36,7 +36,7 @@ namespace PharmacyApp.DAL.Repository
             string command = "DELETE FROM [dbo].[Medicaments] WHERE [Id] = '" + id + "'";
             try
             {
-                _dbContext.CommExecuteNonQuery(command);
+                _db.CommExecuteNonQuery(command);
             }
             catch
             {
@@ -51,7 +51,7 @@ namespace PharmacyApp.DAL.Repository
             
             try
             {
-                list = _dbContext.CommExecuteReader<Medicament>(command);
+                list = _db.CommExecuteReader<Medicament>(command);
             }
             catch
             {
@@ -68,7 +68,7 @@ namespace PharmacyApp.DAL.Repository
             List<List<string>> records = new List<List<string>>();
             try
             {
-                list = _dbContext.CommExecuteReader<Medicament>(command);
+                list = _db.CommExecuteReader<Medicament>(command);
             }
             catch
             {

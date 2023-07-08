@@ -15,13 +15,18 @@ namespace PharmacyApp.View.Pages
 {
     public class CreateStorePage : IPage
     {
+        UnitOfWork _unitOfWork;
+
+        public CreateStorePage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         public string Create()
         {
-            StoresRepository storeRepository = new StoresRepository();
-            PharmaciesRepository pharmRepository = new PharmaciesRepository();
             List<string> itemsMenu = new List<string>();
 
-            List<Pharmacy> pharmacies = pharmRepository.GetAll();
+            List<Pharmacy> pharmacies = _unitOfWork.Pharmacies.GetAll();
             if (pharmacies.Count == 0)
             {
                 Console.WriteLine("Аптеки отсутствуют. Создайте хотя бы одну аптеку!");
@@ -46,7 +51,7 @@ namespace PharmacyApp.View.Pages
 
             Store store = new Store(pharmacyId, name);
 
-            storeRepository.Create(store);
+            _unitOfWork.Stores.Create(store);
 
             Console.WriteLine("Склад успешно добавлен.");
             Console.WriteLine("Нажмите любую клавишу для продолжения.");

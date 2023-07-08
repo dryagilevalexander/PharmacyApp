@@ -11,6 +11,12 @@ namespace PharmacyApp.View.Pages
 {
     public class CreatePharmacyPage : IPage
     {
+        UnitOfWork _unitOfWork;
+
+        public CreatePharmacyPage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         public string Create()
         {
             string menuName = "Работа с аптеками";
@@ -32,9 +38,7 @@ namespace PharmacyApp.View.Pages
             string phone = result;
 
             Pharmacy pharmacy = new Pharmacy(name, address, "+" + phone);
-
-            PharmaciesRepository pharmRepository = new PharmaciesRepository();
-            pharmRepository.Create(pharmacy);
+            _unitOfWork.Pharmacies.Create(pharmacy);
 
             Console.WriteLine("Аптека успешно добавлена.");
             Console.WriteLine("Нажмите любую клавишу для продолжения.");

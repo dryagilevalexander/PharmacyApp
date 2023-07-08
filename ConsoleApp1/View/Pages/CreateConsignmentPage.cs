@@ -12,16 +12,20 @@ namespace PharmacyApp.View.Pages
 {
     public class CreateConsignmentPage : IPage
     {
+        UnitOfWork _unitOfWork;
+
+        public CreateConsignmentPage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }   
+
         public string Create()
         {
-            MedicamentsRepository medicamentsRepository = new MedicamentsRepository();
-            ConsignmentsRepository consignmentsRepository = new ConsignmentsRepository();
-            StoresRepository storesRepository = new StoresRepository();
-            PharmaciesRepository pharmRepository = new PharmaciesRepository();
+
 
             List<string> itemsPharmaciesMenu = new List<string>();
 
-            List<Pharmacy> pharmacies = pharmRepository.GetAll();
+            List<Pharmacy> pharmacies = _unitOfWork.Pharmacies.GetAll();
             if (pharmacies.Count == 0)
             {
                 Console.WriteLine("Аптеки отсутствуют. Создайте хотя бы одну аптеку!");
@@ -42,7 +46,7 @@ namespace PharmacyApp.View.Pages
 
             List<string> itemsStoresMenu = new List<string>();
 
-            List<Store> stores = storesRepository.GetByParentId(pharmacyId);
+            List<Store> stores = _unitOfWork.Stores.GetByParentId(pharmacyId);
             if (stores.Count == 0)
             {
                 Console.WriteLine("Склады отсутствуют. Создайте хотя бы один склад!");
@@ -66,7 +70,7 @@ namespace PharmacyApp.View.Pages
 
             List<string> itemsMedMenu = new List<string>();
 
-            List<Medicament> medicaments = medicamentsRepository.GetAll();
+            List<Medicament> medicaments = _unitOfWork.Medicaments.GetAll();
             if (medicaments.Count == 0)
             {
                 Console.WriteLine("Медикаменты отсутствуют. Создайте хотя бы один медикамент!");
@@ -92,7 +96,7 @@ namespace PharmacyApp.View.Pages
 
             Consignment consignment = new Consignment(medicamentId, storeId, countMed);
 
-            consignmentsRepository.Create(consignment);
+            _unitOfWork.Consignments.Create(consignment);
 
             Console.WriteLine("Партия успешно добавлена.");
             Console.WriteLine("Нажмите любую клавишу для продолжения.");

@@ -11,11 +11,16 @@ namespace PharmacyApp.View.Pages
 {
     public class DeletePharmacyPage : IPage
     {
+        UnitOfWork _unitOfWork;
+
+        public DeletePharmacyPage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         public string Create()
         {
             List<Pharmacy> list = new List<Pharmacy>();
-            PharmaciesRepository pharmRepository = new PharmaciesRepository();
-            list = pharmRepository.GetAll();
+            list = _unitOfWork.Pharmacies.GetAll();
 
             Console.WriteLine(new string('-', 15 + 30 + 50 + 12 + 4));
             Console.WriteLine("|{0,15}|{1,30}|{2,50}|{3,12}|", "Id", "Name", "Address", "Phone");
@@ -34,9 +39,9 @@ namespace PharmacyApp.View.Pages
             if (result == "AbortOperation") return "Работа с аптеками";
             int id = Convert.ToInt32(result);
 
-            if (pharmRepository.GetById(id).Count != 0)
+            if (_unitOfWork.Pharmacies.GetById(id).Count != 0)
             {
-                pharmRepository.Delete(id);
+                _unitOfWork.Pharmacies.Delete(id);
                 Console.WriteLine("Аптека с id={0} успешно удалена", id);
                 Console.WriteLine("Для продолжения нажмите любую клавишу");
             }

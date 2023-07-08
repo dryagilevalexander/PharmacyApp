@@ -12,12 +12,17 @@ namespace PharmacyApp.View.Pages
 {
     public class DeleteMedicamentPage : IPage
     {
+        UnitOfWork _unitOfWork;
+
+        public DeleteMedicamentPage(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         public string Create()
         {
             List<Medicament> list = new List<Medicament>();
             Medicament medicament = new Medicament();
-            MedicamentsRepository medRepository = new MedicamentsRepository();
-            list = medRepository.GetAll();
+            list = _unitOfWork.Medicaments.GetAll();
 
             Console.WriteLine(new string('-', 15 + 50 + 20 + 4));
             Console.WriteLine("|{0,15}|{1,50}|{2,20}|", "Id", "Name", "Price");
@@ -35,9 +40,9 @@ namespace PharmacyApp.View.Pages
             int id = Convert.ToInt32(result);
 
 
-            if (medRepository.GetById(id).Count != 0)
+            if (_unitOfWork.Medicaments.GetById(id).Count != 0)
             {
-                medRepository.Delete(id);
+                _unitOfWork.Medicaments.Delete(id);
                 Console.WriteLine("Медикамент с id={0} успешно удален", id);
                 Console.WriteLine("Для продолжения нажмите любую клавишу");
             }
