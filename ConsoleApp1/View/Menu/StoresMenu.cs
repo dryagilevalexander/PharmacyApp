@@ -9,10 +9,10 @@ namespace PharmacyApp.View.Menu
     public static class StoresMenu
     {
         public static List<string> Items = new List<string>()
-            {
-                "Создать склад",
-                "Удалить склад",
-                "В главное меню"
-            };
+        {
+            "Создать склад",
+            "Удалить склад",
+            "В главное меню"
+        };
     }
 }
