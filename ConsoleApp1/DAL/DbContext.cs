@@ -72,12 +72,11 @@ namespace PharmacyApp.DAL
                 {
                     CommExecuteNonQuery(createDbCommand);
                 }
-                catch (SqlException ex)
+                catch
                 {
                    Console.WriteLine("Не удалось установить соединение с сервером баз данных");
-                    Console.WriteLine(ex.Message);
-                    Console.ReadKey();
-                    Environment.Exit(0);
+                   Console.ReadKey();
+                   Environment.Exit(0);
                 }
 
                 try
