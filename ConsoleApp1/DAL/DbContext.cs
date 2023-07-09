@@ -118,6 +118,10 @@ namespace PharmacyApp.DAL
                 Console.ReadKey();
                 Console.Clear();
                 }
+                else
+                {
+                    Console.Clear();
+                }
 #endif
 
             }
