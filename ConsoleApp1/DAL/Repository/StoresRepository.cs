@@ -4,8 +4,8 @@ namespace PharmacyApp.DAL.Repository
 {
     public class StoresRepository
     {
-     private DbContext _db;
-        public StoresRepository(DbContext db)
+     private IDbContext _db;
+        public StoresRepository(IDbContext db)
         {
             _db = db;
         }

@@ -7,7 +7,7 @@ namespace PharmacyApp.Controllers
     {
         private UnitOfWork unitOfWork;
 
-        public PagesController(DbContext db)
+        public PagesController(IDbContext db)
         {
             unitOfWork = new UnitOfWork(db);
         }

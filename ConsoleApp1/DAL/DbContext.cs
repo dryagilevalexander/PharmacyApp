@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace PharmacyApp.DAL
 {
-    public class DbContext
+    public class DbContext: IDbContext
     {
         private static DbContext instance;
 
@@ -160,7 +160,7 @@ namespace PharmacyApp.DAL
         }
 
 #if DEBUG
-        public void FillTestSet()
+        private void FillTestSet()
 
         {
             string command = "";

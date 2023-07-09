@@ -9,7 +9,7 @@ namespace PharmacyApp
     {
         static void Main(string[] args)
         {
-            DbContext db = DbContext.getInstance();
+            IDbContext db = DbContext.getInstance();
             db.InitializeDb();
             new MenuController(db).CreateMenu(MainMenu.Items);
         }

@@ -4,13 +4,13 @@ namespace PharmacyApp.DAL
 {
     public class UnitOfWork
     {
-        private DbContext _db;
+        private IDbContext _db;
         private PharmaciesRepository pharmRepository;
         private StoresRepository storesRepository;
         private ConsignmentsRepository consRepository;
         private MedicamentsRepository medRepository;
 
-        public UnitOfWork(DbContext db)
+        public UnitOfWork(IDbContext db)
         {
             _db = db;
         }
