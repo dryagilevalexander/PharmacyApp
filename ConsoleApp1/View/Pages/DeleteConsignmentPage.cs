@@ -3,13 +3,12 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class DeleteConsignmentPage
+    public class DeleteConsignmentPage : IPage, IDisposable
     {
-        UnitOfWork _unitOfWork;
-
-        public DeleteConsignmentPage(UnitOfWork unitOfWork)
+        private UnitOfWork _unitOfWork;
+        public DeleteConsignmentPage()
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = new UnitOfWork(DbContext.GetInstance());
         }
 
         public string Create()
@@ -48,6 +47,12 @@ namespace PharmacyApp.View.Pages
             }
             Console.ReadKey();
             return "Работа с партиями";
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+            Dispose();
         }
     }
 }

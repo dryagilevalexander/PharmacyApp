@@ -4,13 +4,12 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class CreateStorePage : IPage
+    public class CreateStorePage : IPage, IDisposable
     {
-        UnitOfWork _unitOfWork;
-
-        public CreateStorePage(UnitOfWork unitOfWork)
+        private UnitOfWork _unitOfWork;
+        public CreateStorePage()
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = new UnitOfWork(DbContext.GetInstance());
         }
 
         public string Create()
@@ -32,7 +31,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
             }
-            int pharmacyId = new MenuController().CreateDbMenu(itemsMenu);
+            int pharmacyId = new Router().CreateDbMenu(itemsMenu);
             Console.Clear();
 
             Console.WriteLine("Добавление склада в базу данных (для отмены операции нажмите ESC)");
@@ -50,6 +49,11 @@ namespace PharmacyApp.View.Pages
 
             Console.ReadKey();
             return "Работа со складами";
+        }
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+            Dispose();
         }
     }
 }

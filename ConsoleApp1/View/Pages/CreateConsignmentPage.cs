@@ -4,13 +4,12 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class CreateConsignmentPage : IPage
+    public class CreateConsignmentPage : IPage, IDisposable
     {
-        UnitOfWork _unitOfWork;
-
-        public CreateConsignmentPage(UnitOfWork unitOfWork)
+        private UnitOfWork _unitOfWork;
+        public CreateConsignmentPage()
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = new UnitOfWork(DbContext.GetInstance());
         }   
 
         public string Create()
@@ -34,7 +33,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsPharmaciesMenu.Add(pharmacyItem.Id + ". " + pharmacyItem.Name + " " + pharmacyItem.Address);
             }
-            int pharmacyId = new MenuController().CreateDbMenu(itemsPharmaciesMenu);
+            int pharmacyId = new Router().CreateDbMenu(itemsPharmaciesMenu);
             Console.Clear();
 
 
@@ -56,7 +55,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsStoresMenu.Add(storeItem.Id + ". " + storeItem.Name);
             }
-            int storeId = new MenuController().CreateDbMenu(itemsStoresMenu);
+            int storeId = new Router().CreateDbMenu(itemsStoresMenu);
             Console.Clear();
 
 
@@ -81,7 +80,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsMedMenu.Add(medicamentItem.Id + ". " + medicamentItem.Name);
             }
-            int medicamentId = new MenuController().CreateDbMenu(itemsMedMenu);
+            int medicamentId = new Router().CreateDbMenu(itemsMedMenu);
             Console.Clear();
 
 
@@ -99,6 +98,12 @@ namespace PharmacyApp.View.Pages
             Console.WriteLine("Нажмите любую клавишу для продолжения.");
             Console.ReadKey();
             return "Работа с партиями";
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+            Dispose();
         }
     }
 }

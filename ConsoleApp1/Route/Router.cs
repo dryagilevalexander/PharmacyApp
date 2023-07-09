@@ -1,17 +1,12 @@
 ﻿using PharmacyApp.DAL;
 using PharmacyApp.View.Menu;
+using PharmacyApp.View.Pages;
 
 namespace PharmacyApp.Controllers
 {
-    public class MenuController
+    public class Router
     {
-        private IDbContext? _db;
-        public MenuController(IDbContext db)
-        {
-            _db = db;
-        }
-
-        public MenuController()
+        public Router()
         {
         }
 
@@ -35,12 +30,40 @@ namespace PharmacyApp.Controllers
                 case "В главное меню":
                     CreateMenu(MainMenu.Items);
                     break;
-                default:
-                    PagesController pagesController = new(_db);
-                    Navigate(pagesController.Navigate(menuItem));
-                    pagesController.Dispose();
+                case "Создать товар":
+                    CreatePage(new CreateMedicamentPage());
+                    break;
+                case "Удалить товар":
+                    CreatePage(new DeleteMedicamentPage());
+                    break;
+                case "Создать аптеку":
+                    CreatePage(new CreatePharmacyPage());
+                    break;
+                case "Удалить аптеку":
+                    CreatePage(new DeletePharmacyPage());
+                    break;
+                case "Товары в аптеке":
+                    CreatePage(new MedInPharmacyPage());
+                    break;
+                case "Создать склад":
+                    CreatePage(new CreateStorePage());
+                    break;
+                case "Удалить склад":
+                    CreatePage(new DeleteStorePage());
+                    break;
+                case "Создать партию":
+                    CreatePage(new CreateConsignmentPage());
+                    break;
+                case "Удалить партию":
+                    CreatePage(new DeleteConsignmentPage());
                     break;
             }
+        }
+
+        public void CreatePage(IPage page)
+        {
+            Navigate(page.Create());
+            page.Dispose();
         }
 
         public void CreateMenu(List<string> items)

@@ -3,13 +3,12 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class CreatePharmacyPage : IPage
+    public class CreatePharmacyPage : IPage, IDisposable
     {
-        UnitOfWork _unitOfWork;
-
-        public CreatePharmacyPage(UnitOfWork unitOfWork)
+        private UnitOfWork _unitOfWork;
+        public CreatePharmacyPage()
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = new UnitOfWork(DbContext.GetInstance());
         }
         public string Create()
         {
@@ -38,6 +37,12 @@ namespace PharmacyApp.View.Pages
             Console.WriteLine("Нажмите любую клавишу для продолжения.");
             Console.ReadKey();
             return menuName;
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+            Dispose();
         }
     }
 }

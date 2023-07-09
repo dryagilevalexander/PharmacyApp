@@ -9,5 +9,6 @@ namespace PharmacyApp.View.Pages
     public interface IPage
     {
         public string Create();
+        public void Dispose();
     }
 }

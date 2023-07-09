@@ -4,13 +4,12 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class MedInPharmacyPage : IPage
+    public class MedInPharmacyPage : IPage, IDisposable
     {
-        UnitOfWork _unitOfWork;
-
-        public MedInPharmacyPage(UnitOfWork unitOfWork)
+        private UnitOfWork _unitOfWork;
+        public MedInPharmacyPage()
         {
-            _unitOfWork = unitOfWork;
+           _unitOfWork = new UnitOfWork(DbContext.GetInstance());
         }
         public string Create()
         {
@@ -31,7 +30,7 @@ namespace PharmacyApp.View.Pages
             {
                 itemsMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
             }
-            int pharmacyId = new MenuController().CreateDbMenu(itemsMenu);
+            int pharmacyId = new Router().CreateDbMenu(itemsMenu);
             Console.Clear();
 
             List<Consignment> list = _unitOfWork.Consignments.GetGroupConsByPharmacyId(pharmacyId);
@@ -50,6 +49,12 @@ namespace PharmacyApp.View.Pages
 
             Console.ReadKey();
             return "Работа с аптеками";
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+            Dispose();
         }
     }
 
