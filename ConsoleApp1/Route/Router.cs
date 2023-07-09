@@ -62,8 +62,9 @@ namespace PharmacyApp.Controllers
 
         public void CreatePage(IPage page)
         {
-            Navigate(page.Create());
+            string routerItem = page.Create();
             page.Dispose();
+            Navigate(routerItem);
         }
 
         public void CreateMenu(List<string> items)

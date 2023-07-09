@@ -9,7 +9,7 @@ namespace PharmacyApp.View.Pages
         private UnitOfWork _unitOfWork;
         public MedInPharmacyPage()
         {
-           _unitOfWork = new UnitOfWork(DbContext.GetInstance());
+           _unitOfWork = new UnitOfWork();
         }
         public string Create()
         {
@@ -48,13 +48,13 @@ namespace PharmacyApp.View.Pages
             Console.WriteLine(new string('-', 15 + 40 + 40 + 4));
 
             Console.ReadKey();
+
             return "Работа с аптеками";
         }
 
         public void Dispose()
         {
             _unitOfWork.Dispose();
-            Dispose();
         }
     }
 

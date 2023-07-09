@@ -8,7 +8,7 @@ namespace PharmacyApp.View.Pages
         private UnitOfWork _unitOfWork;
         public CreatePharmacyPage()
         {
-            _unitOfWork = new UnitOfWork(DbContext.GetInstance());
+            _unitOfWork = new UnitOfWork();
         }
         public string Create()
         {
@@ -36,13 +36,14 @@ namespace PharmacyApp.View.Pages
             Console.WriteLine("Аптека успешно добавлена.");
             Console.WriteLine("Нажмите любую клавишу для продолжения.");
             Console.ReadKey();
+
             return menuName;
+
         }
 
         public void Dispose()
         {
             _unitOfWork.Dispose();
-            Dispose();
         }
     }
 }

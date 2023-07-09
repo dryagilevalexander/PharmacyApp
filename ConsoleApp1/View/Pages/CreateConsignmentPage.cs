@@ -9,7 +9,7 @@ namespace PharmacyApp.View.Pages
         private UnitOfWork _unitOfWork;
         public CreateConsignmentPage()
         {
-            _unitOfWork = new UnitOfWork(DbContext.GetInstance());
+            _unitOfWork = new UnitOfWork();
         }   
 
         public string Create()
@@ -97,13 +97,13 @@ namespace PharmacyApp.View.Pages
             Console.WriteLine("Партия успешно добавлена.");
             Console.WriteLine("Нажмите любую клавишу для продолжения.");
             Console.ReadKey();
+
             return "Работа с партиями";
         }
 
         public void Dispose()
         {
             _unitOfWork.Dispose();
-            Dispose();
         }
     }
 }

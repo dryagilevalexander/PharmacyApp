@@ -8,7 +8,7 @@ namespace PharmacyApp.View.Pages
         private UnitOfWork _unitOfWork;
         public CreateMedicamentPage()
         {
-            _unitOfWork = new UnitOfWork(DbContext.GetInstance());
+            _unitOfWork = new UnitOfWork();
         }
 
         public string Create()
@@ -40,13 +40,12 @@ namespace PharmacyApp.View.Pages
             Console.WriteLine("Медикамент успешно добавлен.");
             Console.WriteLine("Нажмите любую клавишу для продолжения.");
             Console.ReadKey();
+
             return "Работа с товарами";
         }
-
         public void Dispose()
         {
             _unitOfWork.Dispose();
-            Dispose();
         }
     }
 }

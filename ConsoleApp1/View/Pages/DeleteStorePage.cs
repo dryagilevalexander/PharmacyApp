@@ -8,7 +8,7 @@ namespace PharmacyApp.View.Pages
         private UnitOfWork _unitOfWork;
         public DeleteStorePage()
         {
-           _unitOfWork = new UnitOfWork(DbContext.GetInstance());
+           _unitOfWork = new UnitOfWork();
         }
         public string Create()
         {
@@ -45,13 +45,13 @@ namespace PharmacyApp.View.Pages
                 Console.WriteLine("Для продолжения нажмите любую клавишу");
             }
             Console.ReadKey();
+
             return "Работа со складами";
         }
 
         public void Dispose()
         {
             _unitOfWork.Dispose();
-            Dispose();
         }
     }
 }

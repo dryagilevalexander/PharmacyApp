@@ -2,7 +2,7 @@
 
 namespace PharmacyApp.DAL
 {
-    public class UnitOfWork
+    public class UnitOfWork: IDisposable
     {
         private IDbContext _db;
         private PharmaciesRepository pharmRepository;
@@ -10,9 +10,9 @@ namespace PharmacyApp.DAL
         private ConsignmentsRepository consRepository;
         private MedicamentsRepository medRepository;
 
-        public UnitOfWork(IDbContext db)
+        public UnitOfWork()
         {
-            _db = db;
+            _db = DbContext.GetInstance(); 
         }
 
         public PharmaciesRepository Pharmacies
@@ -57,7 +57,6 @@ namespace PharmacyApp.DAL
 
         public void Dispose()
         {
-            Dispose();
             GC.SuppressFinalize(this);
         }
     }
