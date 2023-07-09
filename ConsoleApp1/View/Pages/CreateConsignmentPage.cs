@@ -1,21 +1,14 @@
 ﻿using PharmacyApp.Controllers;
 using PharmacyApp.DAL;
 using PharmacyApp.Models;
+using PharmacyApp.View.Menu;
 
 namespace PharmacyApp.View.Pages
 {
-    public class CreateConsignmentPage : IPage, IDisposable
+    public class CreateConsignmentPage : BasePage
     {
-        private UnitOfWork _unitOfWork;
-        public CreateConsignmentPage()
+        public override string Create()
         {
-            _unitOfWork = new UnitOfWork();
-        }   
-
-        public string Create()
-        {
-
-
             List<string> itemsPharmaciesMenu = new List<string>();
 
             List<Pharmacy> pharmacies = _unitOfWork.Pharmacies.GetAll();
@@ -33,7 +26,11 @@ namespace PharmacyApp.View.Pages
             {
                 itemsPharmaciesMenu.Add(pharmacyItem.Id + ". " + pharmacyItem.Name + " " + pharmacyItem.Address);
             }
-            int pharmacyId = new Router().CreateDbMenu(itemsPharmaciesMenu);
+
+            var pharmaciesMenu = new DynamicMenu(itemsPharmaciesMenu);
+            pharmaciesMenu.Draw();
+            int pharmacyId = Convert.ToInt32(pharmaciesMenu.WaitingForInput().Split(".")[0]);
+
             Console.Clear();
 
 
@@ -55,7 +52,11 @@ namespace PharmacyApp.View.Pages
             {
                 itemsStoresMenu.Add(storeItem.Id + ". " + storeItem.Name);
             }
-            int storeId = new Router().CreateDbMenu(itemsStoresMenu);
+
+            var storesMenu = new DynamicMenu(itemsStoresMenu);
+            storesMenu.Draw();
+            int storeId = Convert.ToInt32(storesMenu.WaitingForInput().Split(".")[0]);
+
             Console.Clear();
 
 
@@ -80,7 +81,11 @@ namespace PharmacyApp.View.Pages
             {
                 itemsMedMenu.Add(medicamentItem.Id + ". " + medicamentItem.Name);
             }
-            int medicamentId = new Router().CreateDbMenu(itemsMedMenu);
+
+            var medicamentsMenu = new DynamicMenu(itemsMedMenu);
+            medicamentsMenu.Draw();
+            int medicamentId = Convert.ToInt32(medicamentsMenu.WaitingForInput().Split(".")[0]);
+            
             Console.Clear();
 
 
@@ -99,11 +104,6 @@ namespace PharmacyApp.View.Pages
             Console.ReadKey();
 
             return "Работа с партиями";
-        }
-
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
         }
     }
 }

@@ -1,19 +1,15 @@
 ﻿using PharmacyApp.Controllers;
 using PharmacyApp.DAL;
 using PharmacyApp.Models;
+using PharmacyApp.View.Menu;
 
 namespace PharmacyApp.View.Pages
 {
-    public class MedInPharmacyPage : IPage, IDisposable
+    public class MedInPharmacyPage : BasePage
     {
-        private UnitOfWork _unitOfWork;
-        public MedInPharmacyPage()
+        public override string Create()
         {
-           _unitOfWork = new UnitOfWork();
-        }
-        public string Create()
-        {
-            List<string> itemsMenu = new List<string>();
+            List<string> itemsPharmMenu = new List<string>();
 
             List<Pharmacy> pharmacies = _unitOfWork.Pharmacies.GetAll();
             if (pharmacies.Count == 0)
@@ -28,9 +24,13 @@ namespace PharmacyApp.View.Pages
 
             foreach (var pharmacy in sortedPharmaciesList)
             {
-                itemsMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
+                itemsPharmMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
             }
-            int pharmacyId = new Router().CreateDbMenu(itemsMenu);
+
+            var pharmaciesMenu = new DynamicMenu(itemsPharmMenu);
+            pharmaciesMenu.Draw();
+            int pharmacyId = Convert.ToInt32(pharmaciesMenu.WaitingForInput().Split(".")[0]);
+
             Console.Clear();
 
             List<Consignment> list = _unitOfWork.Consignments.GetGroupConsByPharmacyId(pharmacyId);
@@ -50,11 +50,6 @@ namespace PharmacyApp.View.Pages
             Console.ReadKey();
 
             return "Работа с аптеками";
-        }
-
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
         }
     }
 

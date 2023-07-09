@@ -3,15 +3,9 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class DeleteConsignmentPage : IPage, IDisposable
+    public class DeleteConsignmentPage : BasePage
     {
-        private UnitOfWork _unitOfWork;
-        public DeleteConsignmentPage()
-        {
-            _unitOfWork = new UnitOfWork();
-        }
-
-        public string Create()
+        public override string Create()
         {
             List<Consignment> list = new List<Consignment>();
             list = _unitOfWork.Consignments.GetAll();
@@ -48,11 +42,6 @@ namespace PharmacyApp.View.Pages
             Console.ReadKey();
 
             return "Работа с партиями";
-        }
-
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
         }
     }
 }

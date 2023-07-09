@@ -11,9 +11,9 @@ namespace PharmacyApp
         {
             IDbContext db = DbContext.GetInstance();
             db.InitializeDb();
-            new Router().CreateMenu(MainMenu.Items);
+            new Router().CreateMenu(new MainMenuPage());
         }
-    } 
+    }
 }
 
 

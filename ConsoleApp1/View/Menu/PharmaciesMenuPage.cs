@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 
 namespace PharmacyApp.View.Menu
 {
-    public static class PharmaciesMenu
+    public class PharmaciesMenuPage : BaseMenuPage
     {
-        public static List<string> Items = new List<string>()
+        protected override List<string> Items
         {
+            get => new()
+            {
             "Создать аптеку",
             "Удалить аптеку",
             "Товары в аптеке",
             "В главное меню"
-        };
+            };
+        }
     }
 }

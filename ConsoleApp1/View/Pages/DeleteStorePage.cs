@@ -3,14 +3,9 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class DeleteStorePage : IPage, IDisposable
+    public class DeleteStorePage : BasePage
     {
-        private UnitOfWork _unitOfWork;
-        public DeleteStorePage()
-        {
-           _unitOfWork = new UnitOfWork();
-        }
-        public string Create()
+        public override string Create()
         {
             List<Store> list = new List<Store>();
             list = _unitOfWork.Stores.GetAll();
@@ -47,11 +42,6 @@ namespace PharmacyApp.View.Pages
             Console.ReadKey();
 
             return "Работа со складами";
-        }
-
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
         }
     }
 }

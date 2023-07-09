@@ -1,4 +1,4 @@
-﻿namespace PharmacyApp
+﻿namespace PharmacyApp.View.Menu
 {
     public struct Point
     {
@@ -12,25 +12,31 @@
         }
     }
 
-    public class Menu
+    public class BaseMenuPage
     {
         private readonly Point _position;
         private readonly List<string> _drives;
         private int _selectedIndex;
 
         public string Drive => _drives[_selectedIndex];
-
-        public Menu(Point position, List<string> drives)
+        protected virtual List<string> Items{ get;}
+        public BaseMenuPage()
         {
-            _position = position;
-            _drives = drives;
+            _position = new Point(Console.WindowWidth / 2 - Items[0].Length / 2, Console.WindowHeight / 2 - Items.Count() / 2);
+            _drives = Items;
+        }
+
+        public BaseMenuPage(List<string> items)
+        {
+            _position = new Point(Console.WindowWidth / 2 - items[0].Length / 2, Console.WindowHeight / 2 - items.Count() / 2);
+            _drives = items;
         }
 
         public void Draw()
         {
             Point backupPos = new Point(Console.CursorLeft, Console.CursorTop);
             Console.SetCursorPosition(_position.X, _position.Y);
-            
+
             for (int i = 0; i < _drives.Count; i++)
             {
                 Console.ForegroundColor = i == _selectedIndex ? ConsoleColor.Green : ConsoleColor.White;

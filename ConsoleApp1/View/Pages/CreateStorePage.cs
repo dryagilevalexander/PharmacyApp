@@ -1,20 +1,15 @@
 ﻿using PharmacyApp.Controllers;
 using PharmacyApp.DAL;
 using PharmacyApp.Models;
+using PharmacyApp.View.Menu;
 
 namespace PharmacyApp.View.Pages
 {
-    public class CreateStorePage : IPage, IDisposable
+    public class CreateStorePage : BasePage
     {
-        private UnitOfWork _unitOfWork;
-        public CreateStorePage()
+        public override string Create()
         {
-            _unitOfWork = new UnitOfWork();
-        }
-
-        public string Create()
-        {
-            List<string> itemsMenu = new List<string>();
+            List<string> itemsPharmMenu = new List<string>();
 
             List<Pharmacy> pharmacies = _unitOfWork.Pharmacies.GetAll();
             if (pharmacies.Count == 0)
@@ -29,9 +24,13 @@ namespace PharmacyApp.View.Pages
 
             foreach (var pharmacy in sortedList)
             {
-                itemsMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
+                itemsPharmMenu.Add(pharmacy.Id + ". " + pharmacy.Name + " " + pharmacy.Address);
             }
-            int pharmacyId = new Router().CreateDbMenu(itemsMenu);
+
+            var pharmaciesMenu = new DynamicMenu(itemsPharmMenu);
+            pharmaciesMenu.Draw();
+            int pharmacyId = Convert.ToInt32(pharmaciesMenu.WaitingForInput().Split(".")[0]);
+
             Console.Clear();
 
             Console.WriteLine("Добавление склада в базу данных (для отмены операции нажмите ESC)");
@@ -50,11 +49,6 @@ namespace PharmacyApp.View.Pages
             Console.ReadKey();
 
             return "Работа со складами";
-        }
-
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using PharmacyApp.DAL.Repository;
+using System.Runtime.InteropServices;
 
 namespace PharmacyApp.DAL
 {
@@ -9,6 +10,7 @@ namespace PharmacyApp.DAL
         private StoresRepository storesRepository;
         private ConsignmentsRepository consRepository;
         private MedicamentsRepository medRepository;
+        private bool disposed = false;
 
         public UnitOfWork()
         {
@@ -57,7 +59,16 @@ namespace PharmacyApp.DAL
 
         public void Dispose()
         {
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed) return;
+            if (disposing)
+            {}
+            disposed = true;
         }
     }
 }

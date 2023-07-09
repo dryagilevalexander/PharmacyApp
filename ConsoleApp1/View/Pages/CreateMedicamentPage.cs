@@ -3,15 +3,9 @@ using PharmacyApp.Models;
 
 namespace PharmacyApp.View.Pages
 {
-    public class CreateMedicamentPage : IPage, IDisposable
+    public class CreateMedicamentPage : BasePage
     {
-        private UnitOfWork _unitOfWork;
-        public CreateMedicamentPage()
-        {
-            _unitOfWork = new UnitOfWork();
-        }
-
-        public string Create()
+        public override string Create()
         {
             string? name = "";
             Console.WriteLine("Добавление медикамента в базу данных (для отмены операции нажмите ESC)");
@@ -42,10 +36,6 @@ namespace PharmacyApp.View.Pages
             Console.ReadKey();
 
             return "Работа с товарами";
-        }
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
         }
     }
 }
