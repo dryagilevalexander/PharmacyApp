@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PharmacyApp.View.Pages
 {
-    public abstract class BasePage: IDisposable
+    public abstract class BasePage
     {
         protected UnitOfWork _unitOfWork;
         public BasePage()
@@ -15,10 +15,11 @@ namespace PharmacyApp.View.Pages
             _unitOfWork = new UnitOfWork();
         }
 
-        public abstract string Create();
-        public void Dispose()
+        public void DisposeUnitOfWork()
         {
             _unitOfWork.Dispose();
         }
+
+        public abstract string Create();
     }
 }

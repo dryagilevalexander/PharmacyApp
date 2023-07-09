@@ -152,7 +152,6 @@ namespace PharmacyApp.DAL
                 }
             }
 
-
             string connectionString = @"Data Source=.\" + serverName + ";Initial Catalog=" + dbName + ";Integrated Security=True";
             _connectionString=connectionString;
         }
@@ -359,7 +358,7 @@ namespace PharmacyApp.DAL
 
 
              using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
+             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -385,7 +384,7 @@ namespace PharmacyApp.DAL
                         records.Add(obj);
                     }
                 }
-            }
+             }
             return records;
         }
     }

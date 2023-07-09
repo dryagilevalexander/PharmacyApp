@@ -60,7 +60,7 @@ namespace PharmacyApp.Controllers
         public void CreatePage(BasePage page)
         {
             string routerItem = page.Create();
-            page.Dispose();
+            page.DisposeUnitOfWork();
             Navigate(routerItem);
         }
 
